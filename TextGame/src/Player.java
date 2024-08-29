@@ -12,8 +12,8 @@ public class Player implements Movable {
         this.name = name;
         this.x = startX;
         this.y = startY;
-        this.health = 100; // Default health
-        this.strength = 10; // Default strength
+        this.health = 10; // Default health
+        this.strength = 1; // Default strength
         this.inventory = new ArrayList<>();
     }
 
