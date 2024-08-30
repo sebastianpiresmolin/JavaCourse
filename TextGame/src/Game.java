@@ -25,7 +25,7 @@ public class Game {
         // dungeon.addItem(new Loot(3, 1, 100));
         dungeon.addItem(new Upgrade(3, 1, "Strength"));
         dungeon.addMonster
-        (new Monster(2, 2, 10, 5, "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence."));
+        (new Monster(2, 2, 10, 5, "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.", true));
 
     }
 
