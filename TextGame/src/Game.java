@@ -9,26 +9,37 @@ public class Game {
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
         dungeon.addWall(0, 0);
-        dungeon.addWall(1, 0);
+
         dungeon.addWall(0, 1);
         dungeon.addWall(0, 2);
+        dungeon.addWall(0, 3);
+        dungeon.addWall(0, 4);
+        dungeon.addWall(0, 5);
+        dungeon.addWall(0, 6);
+        dungeon.addWall(1, 0);
         dungeon.addWall(1, 2);
-        dungeon.addWall(0, 2);
+        dungeon.addWall(1, 3);
+        dungeon.addWall(1, 5);
+        dungeon.addWall(1, 6);
         dungeon.addWall(2, 0);
+        dungeon.addWall(2, 6);
         dungeon.addWall(3, 0);
+        dungeon.addWall(3, 2);
+        dungeon.addWall(3, 6);
         dungeon.addWall(4, 0);
         dungeon.addWall(4, 1);
         dungeon.addWall(4, 2);
-        dungeon.addWall(3, 2);
-        dungeon.addWall(1, 3);
+        dungeon.addWall(4, 3);
+
         dungeon.addWall(3, 3);
+
+        dungeon.addWall(3, 5);
         // dungeon.addItem(new Loot(3, 1, 100));
-        dungeon.addItem(new Upgrade(3, 1, "Strength"));
-        dungeon.addMonster
-        (new Monster(2, 2, 10, 5, "Gray Rat",
-        "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
-        "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
-        true));
+        dungeon.addItem(new Upgrade(3, 1, "Strength", 5));
+        dungeon.addMonster(new Monster(2, 2, 10, 5, "Gray Rat",
+                "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
+                "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
+                true));
 
     }
 
@@ -56,6 +67,9 @@ public class Game {
                     break;
                 case "show stats":
                     player.showStats();
+                    break;
+                case "show inventory":
+                    player.showInventory();
                     break;
                 case "quit":
                     running = false;

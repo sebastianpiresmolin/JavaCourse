@@ -50,7 +50,26 @@ public class Player implements Movable {
     }
 
     public void addItemToInventory(Item item) {
+        if (item instanceof Upgrade) {
+            Upgrade upgrade = (Upgrade) item;
+            applyUpgrade(upgrade);
+        }
         inventory.add(item);
+    }
+
+    private void applyUpgrade(Upgrade upgrade) {
+        if ("Strength".equalsIgnoreCase(upgrade.getUpgradeType())) {
+            this.strength += upgrade.getAmount();
+            System.out.println("Your strength increased by " + upgrade.getAmount() + "!");
+        }
+        if ("Defence".equalsIgnoreCase(upgrade.getUpgradeType())) {
+            this.strength += upgrade.getAmount();
+            System.out.println("Your Defence increased by " + upgrade.getAmount() + "!");
+        }
+        if ("Health".equalsIgnoreCase(upgrade.getUpgradeType())) {
+            this.strength += upgrade.getAmount();
+            System.out.println("Your health increased by " + upgrade.getAmount() + "!");
+        }
     }
 
     public void showStats() {
