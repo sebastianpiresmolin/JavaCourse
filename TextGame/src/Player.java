@@ -41,6 +41,10 @@ public class Player implements Movable {
         return strength;
     }
 
+    public int getDefence() {
+        return defence;
+    }
+
     public void takeDamage(int damage) {
         this.health -= damage;
     }

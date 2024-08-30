@@ -25,7 +25,10 @@ public class Game {
         // dungeon.addItem(new Loot(3, 1, 100));
         dungeon.addItem(new Upgrade(3, 1, "Strength"));
         dungeon.addMonster
-        (new Monster(2, 2, 10, 5, "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.", true));
+        (new Monster(2, 2, 10, 5, "Gray Rat",
+        "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
+        "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
+        true));
 
     }
 

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Dungeon {
     private char[][] dungeonLayout;
@@ -89,6 +90,55 @@ public class Dungeon {
         return null;
     }
 
+
+    public void startCombat(Monster monster) {
+        Scanner scanner = new Scanner(System.in);
+        boolean inCombat = true;
+
+        System.out.println(monster.getDescription());
+        while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
+            System.out.println("Do you want to 'attack' or 'try to escape'?");
+            String action = scanner.nextLine().toLowerCase();
+
+            switch (action) {
+                case "attack":
+                    monster.takeDamage(player.getStrength());
+                    System.out.println(
+                            "You attacked the " + monster.getName() + " for " + player.getStrength() + " damage!");
+                    if (monster.getHealth() > 0) {
+                        player.takeDamage(monster.getStrength() - player.getDefence());
+                        System.out.println(
+                                "The " + monster.getName() + " attacked you for " + (monster.getStrength() - player.getDefence()) + " damage!");
+                    } else {
+                        System.out.println("You defeated the " + monster.getName() + "!");
+                        System.out.println(monster.getDeathText());
+                        monsters.remove(monster);
+                        inCombat = false;
+                    }
+                    break;
+                case "try to escape":
+                    if (monster.canEscape()) {
+                        System.out.println("You managed to escape!");
+                        inCombat = false;
+                    } else {
+                        System.out.println("There is no escaping this fight!");
+                        player.takeDamage(monster.getStrength());
+                        System.out.println(
+                                "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid action! Please choose 'attack' or 'try to escape'.");
+                    break;
+            }
+
+            if (player.getHealth() <= 0) {
+                System.out.println("You have been defeated by the " + monster.getName() + "...");
+                inCombat = false;
+            }
+        }
+    }
+
     public boolean movePlayer(int dx, int dy) {
         int newX = player.getX() + dx;
         int newY = player.getY() + dy;
@@ -118,9 +168,8 @@ public class Dungeon {
 
         Monster monster = getMonsterAt(newX, newY);
         if (monster != null) {
-            System.out.println("You encountered a monster!");
-            // Handle combat logic here
-            return true;
+            startCombat(monster);
+            return !monster.canEscape(); // Prevent player from moving if escape is not possible
         }
 
         return false;
