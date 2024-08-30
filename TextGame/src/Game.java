@@ -25,15 +25,23 @@ public class Game {
         dungeon.addWall(2, 6);
         dungeon.addWall(3, 0);
         dungeon.addWall(3, 2);
+        dungeon.addWall(3, 3);
+        dungeon.addWall(3, 5);
         dungeon.addWall(3, 6);
         dungeon.addWall(4, 0);
         dungeon.addWall(4, 1);
         dungeon.addWall(4, 2);
         dungeon.addWall(4, 3);
+        dungeon.addWall(4, 5);
+        dungeon.addWall(4, 6);
+        dungeon.addWall(5, 3);
+        dungeon.addWall(5, 5);
+        dungeon.addWall(6, 3);
+        dungeon.addWall(6, 5);
+        dungeon.addWall(7, 3);
+        dungeon.addWall(7, 4);
+        dungeon.addWall(7, 5);
 
-        dungeon.addWall(3, 3);
-
-        dungeon.addWall(3, 5);
         // dungeon.addItem(new Loot(3, 1, 100));
         dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
         dungeon.addMonster(new Monster(2, 2, 10, 5, "Gray Rat",
