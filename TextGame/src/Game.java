@@ -23,7 +23,7 @@ public class Game {
 
         while (running) {
             dungeon.printDungeon();
-            System.out.println("Enter your command ('move up', 'move right', 'quit', e.g.):");
+            System.out.println("Enter your command ('move up', 'show stats', 'use item', 'quit', e.g.):");
             String command = scanner.nextLine().toLowerCase();
 
             switch (command) {
@@ -38,6 +38,9 @@ public class Game {
                     break;
                 case "move right":
                     dungeon.movePlayer(0, 1);
+                    break;
+                case "show stats":
+                    player.showStats();
                     break;
                 case "quit":
                     running = false;
