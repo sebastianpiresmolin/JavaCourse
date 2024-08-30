@@ -12,6 +12,7 @@ public class Upgrade extends Item {
 
     @Override
     public String toString() {
-        return "Upgrade: " + upgradeType + " at (" + x + ", " + y + ")";
+        return "Upgrade: " + upgradeType + " at (" + getX() + ", " + getY() + ")";
     }
 }
+
