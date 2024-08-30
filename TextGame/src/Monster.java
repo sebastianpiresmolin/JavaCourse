@@ -7,7 +7,7 @@ public class Monster extends Item implements Movable {
     private boolean escape;
 
     public Monster(int x, int y, int health, int strength, String name, String description, String deathText, boolean escape) {
-        super(x, y);
+        super(x, y, name);
         this.health = health;
         this.strength = strength;
         this.description = description;

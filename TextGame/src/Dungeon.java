@@ -162,7 +162,7 @@ public class Dungeon {
             player.addItemToInventory(item);
             items.remove(item);
             dungeonLayout[newX][newY] = 'P';
-            System.out.println("You found an item: " + item);
+            System.out.println("You found an item: " + item.name);
             return true;
         }
 

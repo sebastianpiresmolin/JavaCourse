@@ -23,6 +23,6 @@ public abstract class Item {
 
     @Override
     public String toString() {
-        return "Item at (" + x + ", " + y + ")";
+        return name;
     }
 }
