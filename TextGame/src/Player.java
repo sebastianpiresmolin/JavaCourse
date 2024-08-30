@@ -6,6 +6,7 @@ public class Player implements Movable {
     private int x, y;
     private int health;
     private int strength;
+    private int defence;
     private List<Item> inventory;
 
     public Player(String name, int startX, int startY) {
@@ -14,6 +15,7 @@ public class Player implements Movable {
         this.y = startY;
         this.health = 10; // Default health
         this.strength = 1; // Default strength
+        this.defence = 0; // Default defence
         this.inventory = new ArrayList<>();
     }
 
