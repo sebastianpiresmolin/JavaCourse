@@ -4,11 +4,13 @@ import java.util.List;
 public class Dungeon {
     private char[][] dungeonLayout;
     private List<Item> items;
+    private List<Monster> monsters;
     private Player player;
 
     public Dungeon(int width, int height) {
         dungeonLayout = new char[width][height];
         items = new ArrayList<>();
+        monsters = new ArrayList<>();
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -32,6 +34,11 @@ public class Dungeon {
         dungeonLayout[item.getX()][item.getY()] = 'I';
     }
 
+    public void addMonster(Monster monster) {
+        monsters.add(monster);
+        dungeonLayout[monster.getX()][monster.getY()] = 'M';
+    }
+
     public boolean isWall(int x, int y) {
         return dungeonLayout[x][y] == '#';
     }
@@ -45,12 +52,32 @@ public class Dungeon {
             for (int j = 0; j < dungeonLayout[i].length; j++) {
                 if (player.getX() == i && player.getY() == j) {
                     System.out.print('P');
+                } else if (isMonsterAt(i, j)) {
+                    System.out.print('M');
                 } else {
                     System.out.print(dungeonLayout[i][j]);
                 }
             }
             System.out.println();
         }
+    }
+
+    private boolean isMonsterAt(int x, int y) {
+        for (Monster monster : monsters) {
+            if (monster.getX() == x && monster.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Monster getMonsterAt(int x, int y) {
+        for (Monster monster : monsters) {
+            if (monster.getX() == x && monster.getY() == y) {
+                return monster;
+            }
+        }
+        return null;
     }
 
     public Item getItemAt(int x, int y) {
@@ -67,7 +94,7 @@ public class Dungeon {
         int newY = player.getY() + dy;
 
         if (isWall(newX, newY)) {
-            System.out.println("You can't move that way!");
+            System.out.println("You can't move through a wall!");
             return false;
         }
 
@@ -86,6 +113,13 @@ public class Dungeon {
             items.remove(item);
             dungeonLayout[newX][newY] = 'P';
             System.out.println("You found an item: " + item);
+            return true;
+        }
+
+        Monster monster = getMonsterAt(newX, newY);
+        if (monster != null) {
+            System.out.println("You encountered a monster!");
+            // Handle combat logic here
             return true;
         }
 

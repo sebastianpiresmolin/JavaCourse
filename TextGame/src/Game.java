@@ -7,7 +7,7 @@ public class Game {
     public Game() {
         dungeon = new Dungeon(20, 20);
         player = new Player("Hero", 1, 1);
-
+        dungeon.placePlayer(player, 1, 1);
         dungeon.addWall(0, 0);
         dungeon.addWall(1, 0);
         dungeon.addWall(0, 1);
@@ -24,8 +24,9 @@ public class Game {
         dungeon.addWall(3, 3);
         // dungeon.addItem(new Loot(3, 1, 100));
         dungeon.addItem(new Upgrade(3, 1, "Strength"));
+        dungeon.addMonster
+        (new Monster(2, 2, 10, 5, "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence."));
 
-        dungeon.placePlayer(player, 1, 1);
     }
 
     public void start() {
