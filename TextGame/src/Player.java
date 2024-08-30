@@ -33,6 +33,10 @@ public class Player implements Movable {
         return y;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getHealth() {
         return health;
     }

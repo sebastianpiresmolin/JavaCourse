@@ -7,17 +7,22 @@ public class Dungeon {
     private List<Item> items;
     private List<Monster> monsters;
     private Player player;
+    private String[][] roomDescriptions;
 
     public Dungeon(int width, int height) {
         dungeonLayout = new char[width][height];
+        roomDescriptions = new String[width][height];
         items = new ArrayList<>();
         monsters = new ArrayList<>();
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 dungeonLayout[i][j] = ' ';
+                roomDescriptions[i][j] = "You see an empty room.";
             }
         }
+        roomDescriptions[2][3] = "This room is larger, with stone walls covered in ancient moss. You can feel a draft coming from the east.";
+        roomDescriptions[3][2] = "A cold, dark room. You hear the faint sound of dripping water.";
     }
 
     public void placePlayer(Player player, int startX, int startY) {
@@ -28,6 +33,27 @@ public class Dungeon {
 
     public void addWall(int x, int y) {
         dungeonLayout[x][y] = '#';
+    }
+
+    public void describeCurrentRoom() {
+        int x = player.getX();
+        int y = player.getY();
+        System.out.println(roomDescriptions[x][y]);
+
+        System.out.print("You can move: ");
+        if (x > 0 && !isWall(x - 1, y)) {
+            System.out.print("up ");
+        }
+        if (x < dungeonLayout.length - 1 && !isWall(x + 1, y)) {
+            System.out.print("down ");
+        }
+        if (y > 0 && !isWall(x, y - 1)) {
+            System.out.print("left ");
+        }
+        if (y < dungeonLayout[0].length - 1 && !isWall(x, y + 1)) {
+            System.out.print("right ");
+        }
+        System.out.println();
     }
 
     public void addItem(Item item) {
@@ -168,6 +194,7 @@ public class Dungeon {
                 dungeonLayout[player.getX()][player.getY()] = ' ';
                 player.move(dx, dy);
                 dungeonLayout[newX][newY] = 'P';
+                describeCurrentRoom();
             }
             return !monster.canEscape();
         }
@@ -176,6 +203,7 @@ public class Dungeon {
             dungeonLayout[player.getX()][player.getY()] = ' ';
             player.move(dx, dy);
             dungeonLayout[newX][newY] = 'P';
+            describeCurrentRoom();
             return true;
         }
 
@@ -185,8 +213,9 @@ public class Dungeon {
             player.move(dx, dy);
             player.addItemToInventory(item);
             items.remove(item);
-            dungeonLayout[newX][newY] = 'P';
             System.out.println("You found an item: " + item.name);
+            dungeonLayout[newX][newY] = 'P';
+            describeCurrentRoom();
             return true;
         }
 

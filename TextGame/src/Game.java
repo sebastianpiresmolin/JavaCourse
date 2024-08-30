@@ -8,6 +8,11 @@ public class Game {
         dungeon = new Dungeon(8, 8);
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
+        System.out.println("You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
+         + player.getName() + "!");
+         System.out.println("You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood.");
+         System.out.println("It seems to be lost. You dug too deep and too greedily. You must escape.");
+         System.out.println("You can move: down");
 
         // walls
         dungeon.addWall(0, 0);
@@ -78,7 +83,7 @@ public class Game {
 
         while (running) {
             dungeon.printDungeon();
-            System.out.println("Enter your command ('move up', 'show stats', 'use item','quit', e.g.):");
+            System.out.println("Enter your command ('move', 'show stats', 'show inventory','quit', e.g.):");
             String command = scanner.nextLine().toLowerCase();
 
             switch (command) {
