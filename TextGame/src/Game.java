@@ -8,8 +8,9 @@ public class Game {
         dungeon = new Dungeon(20, 20);
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
-        dungeon.addWall(0, 0);
 
+        // walls
+        dungeon.addWall(0, 0);
         dungeon.addWall(0, 1);
         dungeon.addWall(0, 2);
         dungeon.addWall(0, 3);
@@ -41,13 +42,21 @@ public class Game {
         dungeon.addWall(7, 3);
         dungeon.addWall(7, 4);
         dungeon.addWall(7, 5);
+        // end walls
 
-        // dungeon.addItem(new Loot(3, 1, 100));
+        // items
         dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
+        dungeon.addItem(new Upgrade(1, 4, "Health", 10, "Dragonscale Gem[+10 Health]"));
+        dungeon.addItem(new Upgrade(2, 5, "Defence", 5, "Piece of Wooden Door[+5 Defence]"));
+        // end items
+
+        // monsters
         dungeon.addMonster(new Monster(2, 2, 10, 5, "Gray Rat",
                 "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
                 "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
                 true));
+        dungeon.addMonster(new Monster(3, 4, 100, 25, "Goblin", "You see a goblin. It looks at you with a hungry look.",
+                "The goblin falls to the ground, dead. You feel a little bad about it. You monster.", false));
 
     }
 

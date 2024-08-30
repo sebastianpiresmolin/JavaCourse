@@ -90,12 +90,11 @@ public class Dungeon {
         return null;
     }
 
-
     public void startCombat(Monster monster) {
         Scanner scanner = new Scanner(System.in);
         boolean inCombat = true;
 
-        System.out.println(monster.getDescription());
+        System.out.println("You've encountered a " + monster.getName() + "!");
         while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
             System.out.println("Do you want to 'attack' or 'try to escape'?");
             String action = scanner.nextLine().toLowerCase();
@@ -106,13 +105,14 @@ public class Dungeon {
                     System.out.println(
                             "You attacked the " + monster.getName() + " for " + player.getStrength() + " damage!");
                     if (monster.getHealth() > 0) {
-                        player.takeDamage(monster.getStrength() - player.getDefence());
+                        player.takeDamage(monster.getStrength());
                         System.out.println(
-                                "The " + monster.getName() + " attacked you for " + (monster.getStrength() - player.getDefence()) + " damage!");
+                                "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!");
                     } else {
                         System.out.println("You defeated the " + monster.getName() + "!");
                         System.out.println(monster.getDeathText());
                         monsters.remove(monster);
+                        dungeonLayout[monster.getX()][monster.getY()] = ' ';
                         inCombat = false;
                     }
                     break;
@@ -148,8 +148,20 @@ public class Dungeon {
             return false;
         }
 
+        Monster monster = getMonsterAt(newX, newY);
+        if (monster != null) {
+            startCombat(monster);
+            if (monster.getHealth() <= 0) {
+                // Monster is defeated, clear the player's current position and move the player
+                dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
+                player.move(dx, dy); // Move player to the new position
+                dungeonLayout[newX][newY] = 'P'; // Mark the new position with 'P'
+            }
+            return !monster.canEscape(); // Prevent player from moving if escape is not possible
+        }
+
         if (isFreeSpace(newX, newY)) {
-            dungeonLayout[player.getX()][player.getY()] = ' ';
+            dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
             player.move(dx, dy);
             dungeonLayout[newX][newY] = 'P';
             return true;
@@ -157,19 +169,13 @@ public class Dungeon {
 
         Item item = getItemAt(newX, newY);
         if (item != null) {
-            dungeonLayout[player.getX()][player.getY()] = ' ';
+            dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
             player.move(dx, dy);
             player.addItemToInventory(item);
             items.remove(item);
             dungeonLayout[newX][newY] = 'P';
             System.out.println("You found an item: " + item.name);
             return true;
-        }
-
-        Monster monster = getMonsterAt(newX, newY);
-        if (monster != null) {
-            startCombat(monster);
-            return !monster.canEscape(); // Prevent player from moving if escape is not possible
         }
 
         return false;
