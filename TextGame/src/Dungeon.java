@@ -97,8 +97,7 @@ public class Dungeon {
         System.out.println("You've encountered a " + monster.getName() + "!");
         while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
             System.out.print("Do you want to 'attack' or 'try to escape'");
-
-            if (monster.isDragon()) {
+            if (monster.isDragon() && player.hasItem("dragonscale gem")) {
                 System.out.print(", or 'offer gem'");
             }
 
@@ -134,7 +133,7 @@ public class Dungeon {
                     }
                     break;
                 case "offer gem":
-                    if (monster.isDragon()) {
+                    if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
                         System.out.println("You offer the gem to the dragon.");
                         inCombat = false;
                     } else {
@@ -166,16 +165,15 @@ public class Dungeon {
         if (monster != null) {
             startCombat(monster);
             if (monster.getHealth() <= 0) {
-                // Monster is defeated, clear the player's current position and move the player
-                dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
-                player.move(dx, dy); // Move player to the new position
-                dungeonLayout[newX][newY] = 'P'; // Mark the new position with 'P'
+                dungeonLayout[player.getX()][player.getY()] = ' ';
+                player.move(dx, dy);
+                dungeonLayout[newX][newY] = 'P';
             }
-            return !monster.canEscape(); // Prevent player from moving if escape is not possible
+            return !monster.canEscape();
         }
 
         if (isFreeSpace(newX, newY)) {
-            dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
+            dungeonLayout[player.getX()][player.getY()] = ' ';
             player.move(dx, dy);
             dungeonLayout[newX][newY] = 'P';
             return true;
@@ -183,7 +181,7 @@ public class Dungeon {
 
         Item item = getItemAt(newX, newY);
         if (item != null) {
-            dungeonLayout[player.getX()][player.getY()] = ' '; // Clear the player's current position
+            dungeonLayout[player.getX()][player.getY()] = ' ';
             player.move(dx, dy);
             player.addItemToInventory(item);
             items.remove(item);

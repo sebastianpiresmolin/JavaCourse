@@ -14,7 +14,7 @@ public class Player implements Movable {
         this.x = startX;
         this.y = startY;
         this.health = 100; // default health
-        this.strength = 10; // default strength
+        this.strength = 1000; // default strength
         this.defence = 0; // default defence
         this.inventory = new ArrayList<>();
     }
@@ -67,6 +67,15 @@ public class Player implements Movable {
         if ("Health".equalsIgnoreCase(upgrade.getUpgradeType())) {
             this.health += upgrade.getAmount();
         }
+    }
+
+    public boolean hasItem(String itemName) {
+        for (Item item : inventory) {
+            if (item.name.toLowerCase().contains(itemName.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void showStats() {

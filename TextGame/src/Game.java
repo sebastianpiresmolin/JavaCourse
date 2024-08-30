@@ -6,8 +6,8 @@ public class Game {
 
     public Game() {
         dungeon = new Dungeon(20, 20);
-        player = new Player("Hero", 1, 1);
-        dungeon.placePlayer(player, 1, 1);
+        player = new Player("Hero", 1, 5);
+        dungeon.placePlayer(player, 1, 5);
 
         // walls
         dungeon.addWall(0, 0);

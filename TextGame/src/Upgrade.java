@@ -4,7 +4,7 @@ public class Upgrade extends Item {
     private String name;
 
     public Upgrade(int x, int y, String upgradeType, int amount, String name) {
-        super(x, y, name); 
+        super(x, y, name);
         this.upgradeType = upgradeType;
         this.amount = amount;
         this.name = name;
@@ -24,7 +24,6 @@ public class Upgrade extends Item {
 
     @Override
     public String toString() {
-        return "Upgrade: " + upgradeType + " at (" + getX() + ", " + getY() + ")";
+        return upgradeType + " Upgrade (" + amount + ") at (" + getX() + ", " + getY() + ")";
     }
 }
-
