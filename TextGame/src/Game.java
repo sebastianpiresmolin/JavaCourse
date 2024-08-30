@@ -54,9 +54,18 @@ public class Game {
         dungeon.addMonster(new Monster(2, 2, 10, 5, "Gray Rat",
                 "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
                 "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
+                true,
+                false));
+        dungeon.addMonster(new Monster(3, 4, 75, 25, "Goblin",
+                "You see an orc. It looks like he's looking for something...or someone.",
+                "The orc falls to the ground with a heavy thud. The orc's eyes glaze over as he takes his last breath, showing a glimmer of sadness. But you don't care about filthy orcs.",
+                false,
+                false));
+        dungeon.addMonster(new Monster(6, 4, 1000, 500, "Dragon",
+                "Before you stands a dragon. It's scales are a deep red and it's eyes are a piercing yellow. It's wings are folded at it's side and it's tail is curled around it's feet. It's a magnificent sight. You cant't help but to notice a gaping hole in it's scaly armour. Is that where the gem belongs?",
+                "The orc falls to the ground with a heavy thud. The orc's eyes glaze over as he takes his last breath, showing a glimmer of sadness. But you don't care about filthy orcs.",
+                false,
                 true));
-        dungeon.addMonster(new Monster(3, 4, 100, 25, "Goblin", "You see a goblin. It looks at you with a hungry look.",
-                "The goblin falls to the ground, dead. You feel a little bad about it. You monster.", false));
 
     }
 

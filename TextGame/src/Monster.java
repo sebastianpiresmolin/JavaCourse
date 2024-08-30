@@ -5,8 +5,10 @@ public class Monster extends Item implements Movable {
     private String description;
     private String deathText;
     private boolean escape;
+    private boolean dragon;
 
-    public Monster(int x, int y, int health, int strength, String name, String description, String deathText, boolean escape) {
+    public Monster(int x, int y, int health, int strength, String name, String description, String deathText,
+            boolean escape, boolean dragon) {
         super(x, y, name);
         this.health = health;
         this.strength = strength;
@@ -14,6 +16,7 @@ public class Monster extends Item implements Movable {
         this.name = name;
         this.deathText = deathText;
         this.escape = escape;
+        this.dragon = dragon;
     }
 
     @Override
@@ -44,6 +47,10 @@ public class Monster extends Item implements Movable {
 
     public boolean canEscape() {
         return escape;
+    }
+
+    public boolean isDragon() {
+        return dragon;
     }
 
     public void takeDamage(int damage) {

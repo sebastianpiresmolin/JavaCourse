@@ -62,10 +62,10 @@ public class Player implements Movable {
             this.strength += upgrade.getAmount();
         }
         if ("Defence".equalsIgnoreCase(upgrade.getUpgradeType())) {
-            this.strength += upgrade.getAmount();
+            this.defence += upgrade.getAmount();
         }
         if ("Health".equalsIgnoreCase(upgrade.getUpgradeType())) {
-            this.strength += upgrade.getAmount();
+            this.health += upgrade.getAmount();
         }
     }
 
@@ -84,7 +84,7 @@ public class Player implements Movable {
         } else {
             System.out.println("Inventory:");
             for (Item item : inventory) {
-                System.out.println("- " + item);
+                System.out.println("- " + item.name);
             }
         }
     }

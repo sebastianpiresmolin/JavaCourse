@@ -96,7 +96,13 @@ public class Dungeon {
 
         System.out.println("You've encountered a " + monster.getName() + "!");
         while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
-            System.out.println("Do you want to 'attack' or 'try to escape'?");
+            System.out.print("Do you want to 'attack' or 'try to escape'");
+
+            if (monster.isDragon()) {
+                System.out.print(", or 'offer gem'");
+            }
+
+            System.out.println("?");
             String action = scanner.nextLine().toLowerCase();
 
             switch (action) {
@@ -127,8 +133,16 @@ public class Dungeon {
                                 "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!");
                     }
                     break;
+                case "offer gem":
+                    if (monster.isDragon()) {
+                        System.out.println("You offer the gem to the dragon.");
+                        inCombat = false;
+                    } else {
+                        System.out.println("That action is not possible.");
+                    }
+                    break;
                 default:
-                    System.out.println("Invalid action! Please choose 'attack' or 'try to escape'.");
+                    System.out.println("Invalid action! Please choose 'attack', 'try to escape', or 'offer gem'.");
                     break;
             }
 
