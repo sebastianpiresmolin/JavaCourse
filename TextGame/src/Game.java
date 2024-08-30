@@ -5,9 +5,9 @@ public class Game {
     private Player player;
 
     public Game() {
-        dungeon = new Dungeon(20, 20);
-        player = new Player("Hero", 1, 5);
-        dungeon.placePlayer(player, 1, 5);
+        dungeon = new Dungeon(8, 8);
+        player = new Player("Hero", 1, 1);
+        dungeon.placePlayer(player, 1, 1);
 
         // walls
         dungeon.addWall(0, 0);
@@ -43,6 +43,9 @@ public class Game {
         dungeon.addWall(7, 4);
         dungeon.addWall(7, 5);
         // end walls
+
+        // rooms
+
 
         // items
         dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
