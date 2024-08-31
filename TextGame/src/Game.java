@@ -64,14 +64,14 @@ public class Game {
                 "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
                 true,
                 false));
-        dungeon.addMonster(new Monster(3, 4, 75, 25, "Goblin",
+        dungeon.addMonster(new Monster(3, 4, 75, 25, "Orc",
                 "You see an orc. It looks like he's looking for something...or someone.",
                 "The orc falls to the ground with a heavy thud. The orc's eyes glaze over as he takes his last breath, showing a glimmer of sadness. But you don't care about filthy orcs.",
                 false,
                 false));
         dungeon.addMonster(new Monster(6, 4, 1000, 500, "Dragon",
-                "Before you stands a dragon. It's scales are a deep red and it's eyes are a piercing yellow. It's wings are folded at it's side and it's tail is curled around it's feet. It's a magnificent sight. You cant't help but to notice a gaping hole in it's scaly armour. Is that where the gem belongs?",
-                "The orc falls to the ground with a heavy thud. The orc's eyes glaze over as he takes his last breath, showing a glimmer of sadness. But you don't care about filthy orcs.",
+                "As you jump down and look up, you see it. A great dragon! Glowing and fading with every breath. The heat is almost unbearable now. It's scales are a deep red and it's eyes are a piercing yellow. It's wings are folded at it's side and it's tail is curled around it's feet. It's a magnificent sight. You cant't help but to notice a gaping hole in it's scaly armour. Is that where the gem belongs?",
+                "",
                 false,
                 true));
 

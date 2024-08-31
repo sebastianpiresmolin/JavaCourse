@@ -21,8 +21,16 @@ public class Dungeon {
                 roomDescriptions[i][j] = "You see an empty room.";
             }
         }
-        roomDescriptions[2][3] = "This room is larger, with stone walls covered in ancient moss. You can feel a draft coming from the east.";
-        roomDescriptions[3][2] = "A cold, dark room. You hear the faint sound of dripping water.";
+        roomDescriptions[2][1] = "You stumble deeper into the dungeon you've fallen into. It almost looks like it's been dug out by dwarves. But can it really be?";
+        roomDescriptions[3][1] = "You jump down another level, a dead end. you can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it.";
+        roomDescriptions[2][2] = "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks.";
+        roomDescriptions[2][3] = "As you walk further along the tracks the air gets thicker.";
+        roomDescriptions[2][4] = "You've come to a crossroads. You can see that there's a small room to the right. You can hear something moving in the dark below you.";
+        roomDescriptions[1][4] = "You see a lot of rubble. It looks like it happened recently. Probably when you fell down here. With the corner of your eye you see something shiny in the rubble. You pick it up.";
+        roomDescriptions[2][5] = "You see a small room. It's empty. You can see the remains of boxes and barrels. The door has been broken down. The handle is still attached to a big piece of wood. You take it.";
+        roomDescriptions[3][4] = "You try not to get orc blood on your boots as you step over the corpse. You feel the air thickening even more as you continue deeper.";
+        roomDescriptions[4][4] = "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning.";
+        roomDescriptions[5][4] = "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with the smell of strong smell of burning and sulfur.";
     }
 
     public void placePlayer(Player player, int startX, int startY) {
@@ -161,6 +169,7 @@ public class Dungeon {
                 case "offer gem":
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
                         System.out.println("You offer the gem to the dragon.");
+                        System.out.println("As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing.");
                         inCombat = false;
                     } else {
                         System.out.println("That action is not possible.");
