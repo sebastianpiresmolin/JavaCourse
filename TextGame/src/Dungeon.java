@@ -58,7 +58,7 @@ public class Dungeon {
                 + "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning."
                 + RESET;
         roomDescriptions[5][4] = GREEN
-                + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with the smell of strong smell of burning and sulfur."
+                + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with thequit strong smell of burning and sulfur."
                 + RESET;
     }
 
