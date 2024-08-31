@@ -80,8 +80,27 @@ public class Game {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
+        boolean menu = true;
 
-        while (running) {
+        while (running && menu) {
+            System.out.println("Enter your command ('start', 'quit', e.g.):");
+            String command = scanner.nextLine().toLowerCase();
+
+            switch (command) {
+                case "start":
+                    menu = false;
+                    break;
+                case "quit":
+                    running = false;
+                    System.out.println("Thanks for playing!");
+                    break;
+                default:
+                    System.out.println("Invalid command! Please use 'start' or 'quit'.");
+                    break;
+            }
+        }
+
+        while (running && !menu) {
             dungeon.printDungeon();
             System.out.println("Enter your command ('move', 'show stats', 'show inventory','quit', e.g.):");
             String command = scanner.nextLine().toLowerCase();

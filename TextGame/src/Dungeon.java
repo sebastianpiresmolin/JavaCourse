@@ -83,17 +83,21 @@ public class Dungeon {
     }
 
     public void printDungeon() {
-        for (int i = 0; i < dungeonLayout.length; i++) {
-            for (int j = 0; j < dungeonLayout[i].length; j++) {
-                if (player.getX() == i && player.getY() == j) {
-                    System.out.print('P');
-                } else if (isMonsterAt(i, j)) {
-                    System.out.print('M');
-                } else {
-                    System.out.print(dungeonLayout[i][j]);
+        boolean isDevMode = false;
+
+        if (isDevMode) {
+            for (int i = 0; i < dungeonLayout.length; i++) {
+                for (int j = 0; j < dungeonLayout[i].length; j++) {
+                    if (player.getX() == i && player.getY() == j) {
+                        System.out.print('P');
+                    } else if (isMonsterAt(i, j)) {
+                        System.out.print('M');
+                    } else {
+                        System.out.print(dungeonLayout[i][j]);
+                    }
                 }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 
