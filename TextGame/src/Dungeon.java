@@ -32,16 +32,34 @@ public class Dungeon {
                 roomDescriptions[i][j] = "You see an empty room.";
             }
         }
-        roomDescriptions[2][1] = "You stumble deeper into the dungeon you've fallen into. It almost looks like it's been dug out by dwarves. But can it really be?";
-        roomDescriptions[3][1] = "You jump down another level, a dead end. you can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it.";
-        roomDescriptions[2][2] = "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks.";
-        roomDescriptions[2][3] = "As you walk further along the tracks the air gets thicker.";
-        roomDescriptions[2][4] = "You've come to a crossroads. You can see that there's a small room to the right. You can hear something moving in the dark below you.";
-        roomDescriptions[1][4] = "You see a lot of rubble. It looks like it happened recently. Probably when you fell down here. With the corner of your eye you see something shiny in the rubble. You pick it up.";
-        roomDescriptions[2][5] = "You see a small room. It's empty. You can see the remains of boxes and barrels. The door has been broken down. The handle is still attached to a big piece of wood. You take it.";
-        roomDescriptions[3][4] = "You try not to get orc blood on your boots as you step over the corpse. You feel the air thickening even more as you continue deeper.";
-        roomDescriptions[4][4] = "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning.";
-        roomDescriptions[5][4] = "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with the smell of strong smell of burning and sulfur.";
+        roomDescriptions[2][1] = GREEN
+                + "You stumble deeper into the dungeon you've fallen into. It almost looks like it's been dug out by dwarves. But can it really be?"
+                + RESET;
+        roomDescriptions[3][1] = GREEN
+                + "You jump down another level, a dead end. you can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it."
+                + RESET;
+        roomDescriptions[2][2] = GREEN
+                + "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks."
+                + RESET;
+        roomDescriptions[2][3] = GREEN + "As you walk further along the tracks the air gets thicker." + RESET;
+        roomDescriptions[2][4] = GREEN
+                + "You've come to a crossroads. You can see that there's a small room to the right. You can hear something moving in the dark below you."
+                + RESET;
+        roomDescriptions[1][4] = GREEN
+                + "You see a lot of rubble. It looks like it happened recently. Probably when you fell down here. With the corner of your eye you see something shiny in the rubble. You pick it up."
+                + RESET;
+        roomDescriptions[2][5] = GREEN
+                + "You see a small room. It's empty. You can see the remains of boxes and barrels. The door has been broken down. The handle is still attached to a big piece of wood. You take it."
+                + RESET;
+        roomDescriptions[3][4] = GREEN
+                + "You try not to get orc blood on your boots as you step over the corpse. You feel the air thickening even more as you continue deeper."
+                + RESET;
+        roomDescriptions[4][4] = GREEN
+                + "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning."
+                + RESET;
+        roomDescriptions[5][4] = GREEN
+                + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with the smell of strong smell of burning and sulfur."
+                + RESET;
     }
 
     public void placePlayer(Player player, int startX, int startY) {
@@ -157,14 +175,16 @@ public class Dungeon {
                 case "attack":
                     monster.takeDamage(player.getStrength());
                     System.out.println(
-                            GREEN + "You attacked the " + monster.getName() + " for " + player.getStrength() + " damage!" + RESET);
+                            GREEN + "You attacked the " + monster.getName() + " for " + player.getStrength()
+                                    + " damage!" + RESET);
                     if (monster.getHealth() > 0) {
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!" + RESET);
+                                GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength()
+                                        + " damage!" + RESET);
                     } else {
                         System.out.println(GREEN + "You defeated the " + monster.getName() + "!" + RESET);
-                        System.out.println( GREEN + monster.getDeathText() + RESET);
+                        System.out.println(GREEN + monster.getDeathText() + RESET);
                         monsters.remove(monster);
                         dungeonLayout[monster.getX()][monster.getY()] = ' ';
                         inCombat = false;
@@ -178,29 +198,38 @@ public class Dungeon {
                         System.out.println(RED + "There is no escaping this fight!" + RESET);
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                GREEN + "The " + monster.getName() + " attacked you for " + RESET + RED + monster.getStrength() + RESET + " damage!");
+                                GREEN + "The " + monster.getName() + " attacked you for " + RESET + RED
+                                        + monster.getStrength() + RESET + " damage!");
                     }
                     break;
                 case "offer gem":
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
                         System.out.println(GREEN + "You offer the gem to the dragon." + RESET);
                         System.out.println(
-                                GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing." + RESET);
+                                GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing."
+                                        + RESET);
                         System.out.println(
-                                GREEN + "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down." + RESET);
+                                GREEN + "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down."
+                                        + RESET);
                         System.out.println(
-                                GREEN + "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest." + RESET);
+                                GREEN + "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest."
+                                        + RESET);
                         System.out.println(
-                                GREEN + "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through." + RESET);
+                                GREEN + "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through."
+                                        + RESET);
                         System.out.println(
-                                GREEN + "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day." + RESET);
+                                GREEN + "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day."
+                                        + RESET);
+                        System.out.println(
+                                "Thanks for playing my little game. I hope you enjoyed it. Feel free to quit the game now.");
                         inCombat = false;
                     } else {
                         System.out.println(RED + "That action is not possible." + RESET);
                     }
                     break;
                 default:
-                    System.out.println(RED + "Invalid action!" + RESET + "Please choose 'attack', 'try to escape', or 'offer gem'.");
+                    System.out.println(RED + "Invalid action!" + RESET
+                            + "Please choose 'attack', 'try to escape', or 'offer gem'.");
                     break;
             }
 
