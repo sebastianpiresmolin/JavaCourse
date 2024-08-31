@@ -169,7 +169,16 @@ public class Dungeon {
                 case "offer gem":
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
                         System.out.println("You offer the gem to the dragon.");
-                        System.out.println("As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing.");
+                        System.out.println(
+                                "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing.");
+                        System.out.println(
+                                "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down.");
+                        System.out.println(
+                                "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest.");
+                        System.out.println(
+                                "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through.");
+                        System.out.println(
+                                "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day.");
                         inCombat = false;
                     } else {
                         System.out.println("That action is not possible.");
