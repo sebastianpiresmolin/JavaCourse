@@ -9,6 +9,17 @@ public class Dungeon {
     private Player player;
     private String[][] roomDescriptions;
 
+    // ANSI Colors
+    public static final String RESET = "\033[0m"; // Text Reset
+    public static final String RED = "\033[0;31m"; // RED
+    public static final String GREEN = "\033[0;32m"; // GREEN
+    public static final String YELLOW = "\033[0;33m"; // YELLOW
+    public static final String BLUE = "\033[0;34m"; // BLUE
+    public static final String PURPLE = "\033[0;35m"; // PURPLE
+    public static final String CYAN = "\033[0;36m"; // CYAN
+    public static final String WHITE = "\033[0;37m"; // WHITE
+    // end ANSI Colors
+
     public Dungeon(int width, int height) {
         dungeonLayout = new char[width][height];
         roomDescriptions = new String[width][height];
@@ -132,28 +143,28 @@ public class Dungeon {
         Scanner scanner = new Scanner(System.in);
         boolean inCombat = true;
 
-        System.out.println("You've encountered a " + monster.getName() + "!");
+        System.out.println(GREEN + "You've encountered a " + monster.getName() + "!" + RESET);
         while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
-            System.out.print("Do you want to 'attack' or 'try to escape'");
+            System.out.print(GREEN + "Do you want to 'attack' or 'try to escape'" + RESET);
             if (monster.isDragon() && player.hasItem("dragonscale gem")) {
-                System.out.print(", or 'offer gem'");
+                System.out.print(GREEN + ", or 'offer gem'" + RESET);
             }
 
-            System.out.println("?");
+            System.out.println(GREEN + "?" + RESET);
             String action = scanner.nextLine().toLowerCase();
 
             switch (action) {
                 case "attack":
                     monster.takeDamage(player.getStrength());
                     System.out.println(
-                            "You attacked the " + monster.getName() + " for " + player.getStrength() + " damage!");
+                            GREEN + "You attacked the " + monster.getName() + " for " + player.getStrength() + " damage!" + RESET);
                     if (monster.getHealth() > 0) {
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!");
+                                GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!" + RESET);
                     } else {
-                        System.out.println("You defeated the " + monster.getName() + "!");
-                        System.out.println(monster.getDeathText());
+                        System.out.println(GREEN + "You defeated the " + monster.getName() + "!" + RESET);
+                        System.out.println( GREEN + monster.getDeathText() + RESET);
                         monsters.remove(monster);
                         dungeonLayout[monster.getX()][monster.getY()] = ' ';
                         inCombat = false;
@@ -161,40 +172,40 @@ public class Dungeon {
                     break;
                 case "try to escape":
                     if (monster.canEscape()) {
-                        System.out.println("You managed to escape!");
+                        System.out.println(GREEN + "You managed to escape!" + RESET);
                         inCombat = false;
                     } else {
-                        System.out.println("There is no escaping this fight!");
+                        System.out.println(RED + "There is no escaping this fight!" + RESET);
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                "The " + monster.getName() + " attacked you for " + monster.getStrength() + " damage!");
+                                GREEN + "The " + monster.getName() + " attacked you for " + RESET + RED + monster.getStrength() + RESET + " damage!");
                     }
                     break;
                 case "offer gem":
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
-                        System.out.println("You offer the gem to the dragon.");
+                        System.out.println(GREEN + "You offer the gem to the dragon." + RESET);
                         System.out.println(
-                                "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing.");
+                                GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing." + RESET);
                         System.out.println(
-                                "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down.");
+                                GREEN + "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down." + RESET);
                         System.out.println(
-                                "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest.");
+                                GREEN + "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest." + RESET);
                         System.out.println(
-                                "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through.");
+                                GREEN + "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through." + RESET);
                         System.out.println(
-                                "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day.");
+                                GREEN + "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day." + RESET);
                         inCombat = false;
                     } else {
-                        System.out.println("That action is not possible.");
+                        System.out.println(RED + "That action is not possible." + RESET);
                     }
                     break;
                 default:
-                    System.out.println("Invalid action! Please choose 'attack', 'try to escape', or 'offer gem'.");
+                    System.out.println(RED + "Invalid action!" + RESET + "Please choose 'attack', 'try to escape', or 'offer gem'.");
                     break;
             }
 
             if (player.getHealth() <= 0) {
-                System.out.println("You have been defeated by the " + monster.getName() + "...");
+                System.out.println(RED + "You have been defeated by the " + monster.getName() + "..." + RESET);
                 inCombat = false;
             }
         }
@@ -205,7 +216,7 @@ public class Dungeon {
         int newY = player.getY() + dy;
 
         if (isWall(newX, newY)) {
-            System.out.println("You can't move through a wall!");
+            System.out.println(RED + "You can't move through a wall!" + RESET);
             return false;
         }
 
@@ -235,7 +246,7 @@ public class Dungeon {
             player.move(dx, dy);
             player.addItemToInventory(item);
             items.remove(item);
-            System.out.println("You found an item: " + item.name);
+            System.out.println(CYAN + "You found an item: " + RESET + item.name);
             dungeonLayout[newX][newY] = 'P';
             describeCurrentRoom();
             return true;

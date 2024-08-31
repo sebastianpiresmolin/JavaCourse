@@ -4,15 +4,22 @@ public class Game {
     private Dungeon dungeon;
     private Player player;
 
+    // ANSI Colors
+    public static final String RESET = "\033[0m"; // Text Reset
+    public static final String RED = "\033[0;31m"; // RED
+    public static final String GREEN = "\033[0;32m"; // GREEN
+    public static final String YELLOW = "\033[0;33m"; // YELLOW
+    public static final String BLUE = "\033[0;34m"; // BLUE
+    public static final String PURPLE = "\033[0;35m"; // PURPLE
+    public static final String CYAN = "\033[0;36m"; // CYAN
+    public static final String WHITE = "\033[0;37m"; // WHITE
+    // end ANSI Colors
+
     public Game() {
+
         dungeon = new Dungeon(8, 8);
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
-        System.out.println("You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
-         + player.getName() + "!");
-         System.out.println("You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood.");
-         System.out.println("It seems to be lost. You dug too deep and too greedily. You must escape.");
-         System.out.println("You can move: down");
 
         // walls
         dungeon.addWall(0, 0);
@@ -51,7 +58,6 @@ public class Game {
 
         // rooms
 
-
         // items
         dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
         dungeon.addItem(new Upgrade(1, 4, "Health", 10, "Dragonscale Gem[+10 Health]"));
@@ -83,19 +89,42 @@ public class Game {
         boolean menu = true;
 
         while (running && menu) {
-            System.out.println("Enter your command ('start', 'quit', e.g.):");
+            System.out.println("=====================================");
+            System.out.println(BLUE + "Welcome to the Depths of Kazad-Dûm!" + RESET);
+            System.out.println("=====================================");
+            String playerName = "";
+            while (playerName.isEmpty()) {
+                System.out.println(YELLOW + "Please enter your name to start the adventure:" + RESET);
+                playerName = scanner.nextLine().trim();
+                player.addName(playerName);
+
+                if (playerName.isEmpty()) {
+                    System.out.println(RED + "Name cannot be empty. Please enter a valid name." + RESET);
+                }
+            }
+            System.out.println(" ");
+            System.out.println("Enter your command ('start' or 'quit'):");
             String command = scanner.nextLine().toLowerCase();
 
             switch (command) {
                 case "start":
                     menu = false;
+                    System.out.println(GREEN +
+                            "You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
+                            + player.getName() + "!" + RESET);
+                    System.out.println(
+                            GREEN + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
+                                    + RESET);
+                    System.out.println(
+                            GREEN + "It seems to be lost. You dug too deep and too greedily. You must escape." + RESET);
+                    System.out.println(GREEN + "You can move: down" + RESET);
                     break;
                 case "quit":
                     running = false;
-                    System.out.println("Thanks for playing!");
+                    System.out.println(BLUE + "Thanks for playing!" + RESET);
                     break;
                 default:
-                    System.out.println("Invalid command! Please use 'start' or 'quit'.");
+                    System.out.println(RED + "Invalid command!" + RESET + "Please use 'start' or 'quit'.");
                     break;
             }
         }
@@ -130,7 +159,8 @@ public class Game {
                     break;
                 default:
                     System.out.println(
-                            "Invalid command! Please use 'move forward', 'move backward', 'move left', 'move right', or 'quit'.");
+                            RED + "Invalid command!" + RESET
+                                    + "Please use 'move forward', 'move backward', 'move left', 'move right', or 'quit'.");
                     break;
             }
         }
