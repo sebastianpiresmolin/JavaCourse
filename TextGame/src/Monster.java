@@ -1,4 +1,4 @@
-public class Monster extends Item implements Movable {
+public class Monster extends Item implements Movable, Obstacle {
     private int health;
     private int strength;
     private String name;
@@ -23,6 +23,11 @@ public class Monster extends Item implements Movable {
     public void move(int dx, int dy) {
         this.x += dx;
         this.y += dy;
+    }
+
+    @Override
+    public boolean isPassable() {
+        return health <= 0;  // If monster is STRUCK DOWN, pass you may
     }
 
     public int getHealth() {

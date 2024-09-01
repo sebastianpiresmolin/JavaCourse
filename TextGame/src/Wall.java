@@ -16,4 +16,9 @@ public class Wall implements Obstacle {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean isPassable() {
+        return false;  // Walls are hard, ouch!
+    }
 }
