@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
-public class Main {
+public class Game {
     private Maze dungeon;
     private Player player;
 
-    public Main() {
+    public Game() {
         // Initialize the dungeon and player
         dungeon = new Maze(8, 8);
         player = new Player("Hero", 1, 1);
@@ -137,7 +137,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main game = new Main();
+        Game game = new Game();
         game.start();
     }
 }
