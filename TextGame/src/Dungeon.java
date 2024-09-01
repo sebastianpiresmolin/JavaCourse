@@ -3,28 +3,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Dungeon {
+    private List<Obstacle> obstacles;
     private char[][] dungeonLayout;
     private List<Item> items;
     private List<Monster> monsters;
     private Player player;
     private String[][] roomDescriptions;
 
-    // ANSI Colors
-    public static final String RESET = "\033[0m"; // Text Reset
-    public static final String RED = "\033[0;31m"; // RED
-    public static final String GREEN = "\033[0;32m"; // GREEN
-    public static final String YELLOW = "\033[0;33m"; // YELLOW
-    public static final String BLUE = "\033[0;34m"; // BLUE
-    public static final String PURPLE = "\033[0;35m"; // PURPLE
-    public static final String CYAN = "\033[0;36m"; // CYAN
-    public static final String WHITE = "\033[0;37m"; // WHITE
-    // end ANSI Colors
-
     public Dungeon(int width, int height) {
         dungeonLayout = new char[width][height];
         roomDescriptions = new String[width][height];
         items = new ArrayList<>();
         monsters = new ArrayList<>();
+        obstacles = new ArrayList<>();
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -32,34 +23,36 @@ public class Dungeon {
                 roomDescriptions[i][j] = "You see an empty room.";
             }
         }
-        roomDescriptions[2][1] = GREEN
+
+        // Initial room descriptions (this could be expanded or moved to another class)
+        roomDescriptions[2][1] = ANSIColors.GREEN
                 + "You stumble deeper into the dungeon you've fallen into. It almost looks like it's been dug out by dwarves. But can it really be?"
-                + RESET;
-        roomDescriptions[3][1] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[3][1] = ANSIColors.GREEN
                 + "You jump down another level, a dead end. you can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it."
-                + RESET;
-        roomDescriptions[2][2] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[2][2] = ANSIColors.GREEN
                 + "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks."
-                + RESET;
-        roomDescriptions[2][3] = GREEN + "As you walk further along the tracks the air gets thicker." + RESET;
-        roomDescriptions[2][4] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[2][3] = ANSIColors.GREEN + "As you walk further along the tracks the air gets thicker." + ANSIColors.RESET;
+        roomDescriptions[2][4] = ANSIColors.GREEN
                 + "You've come to a crossroads. You can see that there's a small room to the right. You can hear something moving in the dark below you."
-                + RESET;
-        roomDescriptions[1][4] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[1][4] = ANSIColors.GREEN
                 + "You see a lot of rubble. It looks like it happened recently. Probably when you fell down here. With the corner of your eye you see something shiny in the rubble. You pick it up."
-                + RESET;
-        roomDescriptions[2][5] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[2][5] = ANSIColors.GREEN
                 + "You see a small room. It's empty. You can see the remains of boxes and barrels. The door has been broken down. The handle is still attached to a big piece of wood. You take it."
-                + RESET;
-        roomDescriptions[3][4] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[3][4] = ANSIColors.GREEN
                 + "You try not to get orc blood on your boots as you step over the corpse. You feel the air thickening even more as you continue deeper."
-                + RESET;
-        roomDescriptions[4][4] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[4][4] = ANSIColors.GREEN
                 + "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning."
-                + RESET;
-        roomDescriptions[5][4] = GREEN
+                + ANSIColors.RESET;
+        roomDescriptions[5][4] = ANSIColors.GREEN
                 + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with thequit strong smell of burning and sulfur."
-                + RESET;
+                + ANSIColors.RESET;
     }
 
     public void placePlayer(Player player, int startX, int startY) {
@@ -68,8 +61,33 @@ public class Dungeon {
         dungeonLayout[startX][startY] = 'P';
     }
 
+    // Add a wall to the dungeon
     public void addWall(int x, int y) {
+        Wall wall = new Wall(x, y);
+        obstacles.add(wall);
         dungeonLayout[x][y] = '#';
+    }
+
+    // Add multiple walls to the dungeon
+    public void addObstacles(Obstacle[] obstaclesArray) {
+        for (Obstacle obstacle : obstaclesArray) {
+            obstacles.add(obstacle);
+            dungeonLayout[obstacle.getX()][obstacle.getY()] = '#';
+        }
+    }
+
+    // check for collision
+    public boolean isWall(int x, int y) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.getX() == x && obstacle.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFreeSpace(int x, int y) {
+        return dungeonLayout[x][y] == ' ';
     }
 
     public void describeCurrentRoom() {
@@ -103,14 +121,8 @@ public class Dungeon {
         dungeonLayout[monster.getX()][monster.getY()] = 'M';
     }
 
-    public boolean isWall(int x, int y) {
-        return dungeonLayout[x][y] == '#';
-    }
-
-    public boolean isFreeSpace(int x, int y) {
-        return dungeonLayout[x][y] == ' ';
-    }
-
+    
+    // set isDevMode to true to print the dungeon layout with the player and monsters while playing
     public void printDungeon() {
         boolean isDevMode = false;
 
@@ -161,30 +173,30 @@ public class Dungeon {
         Scanner scanner = new Scanner(System.in);
         boolean inCombat = true;
 
-        System.out.println(GREEN + "You've encountered a " + monster.getName() + "!" + RESET);
+        System.out.println(ANSIColors.GREEN + "You've encountered a " + monster.getName() + "!" + ANSIColors.RESET);
         while (inCombat && monster.getHealth() > 0 && player.getHealth() > 0) {
-            System.out.print(GREEN + "Do you want to 'attack' or 'try to escape'" + RESET);
+            System.out.print(ANSIColors.GREEN + "Do you want to 'attack' or 'try to escape'" + ANSIColors.RESET);
             if (monster.isDragon() && player.hasItem("dragonscale gem")) {
-                System.out.print(GREEN + ", or 'offer gem'" + RESET);
+                System.out.print(ANSIColors.GREEN + ", or 'offer gem'" + ANSIColors.RESET);
             }
 
-            System.out.println(GREEN + "?" + RESET);
+            System.out.println(ANSIColors.GREEN + "?" + ANSIColors.RESET);
             String action = scanner.nextLine().toLowerCase();
 
             switch (action) {
                 case "attack":
                     monster.takeDamage(player.getStrength());
                     System.out.println(
-                            GREEN + "You attacked the " + monster.getName() + " for " + player.getStrength()
-                                    + " damage!" + RESET);
+                            ANSIColors.GREEN + "You attacked the " + monster.getName() + " for " + player.getStrength()
+                                    + " damage!" + ANSIColors.RESET);
                     if (monster.getHealth() > 0) {
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength()
-                                        + " damage!" + RESET);
+                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength()
+                                        + " damage!" + ANSIColors.RESET);
                     } else {
-                        System.out.println(GREEN + "You defeated the " + monster.getName() + "!" + RESET);
-                        System.out.println(GREEN + monster.getDeathText() + RESET);
+                        System.out.println(ANSIColors.GREEN + "You defeated the " + monster.getName() + "!" + ANSIColors.RESET);
+                        System.out.println(ANSIColors.GREEN + monster.getDeathText() + ANSIColors.RESET);
                         monsters.remove(monster);
                         dungeonLayout[monster.getX()][monster.getY()] = ' ';
                         inCombat = false;
@@ -192,49 +204,37 @@ public class Dungeon {
                     break;
                 case "try to escape":
                     if (monster.canEscape()) {
-                        System.out.println(GREEN + "You managed to escape!" + RESET);
+                        System.out.println(ANSIColors.GREEN + "You managed to escape!" + ANSIColors.RESET);
                         inCombat = false;
                     } else {
-                        System.out.println(RED + "There is no escaping this fight!" + RESET);
+                        System.out.println(ANSIColors.RED + "There is no escaping this fight!" + ANSIColors.RESET);
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                GREEN + "The " + monster.getName() + " attacked you for " + RESET + RED
-                                        + monster.getStrength() + RESET + " damage!");
+                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for " + ANSIColors.RESET + ANSIColors.RED
+                                        + monster.getStrength() + ANSIColors.RESET + " damage!");
                     }
                     break;
                 case "offer gem":
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
-                        System.out.println(GREEN + "You offer the gem to the dragon." + RESET);
+                        System.out.println(ANSIColors.GREEN + "You offer the gem to the dragon." + ANSIColors.RESET);
                         System.out.println(
-                                GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents it's chest, where a big red scale is missing."
-                                        + RESET);
-                        System.out.println(
-                                GREEN + "You place the gem in the hole and the dragon lets out a deep breath. The heat is immense now. The dragon's eyes close and it's breathing slows down."
-                                        + RESET);
-                        System.out.println(
-                                GREEN + "The dragon is at peace now. You can see the gem glowing from the inside of the dragon's chest."
-                                        + RESET);
-                        System.out.println(
-                                GREEN + "As the dragon lays down to rest, you can see an opening in the wall. You can see the light of the sun shining through."
-                                        + RESET);
-                        System.out.println(
-                                GREEN + "As you squeeze through you draw a breathe of fresh air. You might've not got to keep the gem. But you live to mine another day."
-                                        + RESET);
+                                ANSIColors.GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents its chest, where a big red scale is missing."
+                                        + ANSIColors.RESET);
                         System.out.println(
                                 "Thanks for playing my little game. I hope you enjoyed it. Feel free to quit the game now.");
                         inCombat = false;
                     } else {
-                        System.out.println(RED + "That action is not possible." + RESET);
+                        System.out.println(ANSIColors.RED + "That action is not possible." + ANSIColors.RESET);
                     }
                     break;
                 default:
-                    System.out.println(RED + "Invalid action!" + RESET
+                    System.out.println(ANSIColors.RED + "Invalid action!" + ANSIColors.RESET
                             + "Please choose 'attack', 'try to escape', or 'offer gem'.");
                     break;
             }
 
             if (player.getHealth() <= 0) {
-                System.out.println(RED + "You have been defeated by the " + monster.getName() + "..." + RESET);
+                System.out.println(ANSIColors.RED + "You have been defeated by the " + monster.getName() + "..." + ANSIColors.RESET);
                 inCombat = false;
             }
         }
@@ -245,7 +245,7 @@ public class Dungeon {
         int newY = player.getY() + dy;
 
         if (isWall(newX, newY)) {
-            System.out.println(RED + "You can't move through a wall!" + RESET);
+            System.out.println(ANSIColors.RED + "You can't move through a wall!" + ANSIColors.RESET);
             return false;
         }
 
@@ -275,7 +275,7 @@ public class Dungeon {
             player.move(dx, dy);
             player.addItemToInventory(item);
             items.remove(item);
-            System.out.println(CYAN + "You found an item: " + RESET + item.name);
+            System.out.println(ANSIColors.CYAN + "You found an item: " + ANSIColors.RESET + item.name);
             dungeonLayout[newX][newY] = 'P';
             describeCurrentRoom();
             return true;

@@ -4,17 +4,6 @@ public class Main {
     private Dungeon dungeon;
     private Player player;
 
-    // ANSI Colors
-    public static final String RESET = "\033[0m"; // Text Reset
-    public static final String RED = "\033[0;31m"; // RED
-    public static final String GREEN = "\033[0;32m"; // GREEN
-    public static final String YELLOW = "\033[0;33m"; // YELLOW
-    public static final String BLUE = "\033[0;34m"; // BLUE
-    public static final String PURPLE = "\033[0;35m"; // PURPLE
-    public static final String CYAN = "\033[0;36m"; // CYAN
-    public static final String WHITE = "\033[0;37m"; // WHITE
-    // end ANSI Colors
-
     public Main() {
 
         dungeon = new Dungeon(8, 8);
@@ -90,16 +79,16 @@ public class Main {
 
         while (running && menu) {
             System.out.println("=====================================");
-            System.out.println(BLUE + "Welcome to the Depths of Erebor!" + RESET);
+            System.out.println(ANSIColors.BLUE + "Welcome to the Depths of Erebor!" + ANSIColors.RESET);
             System.out.println("=====================================");
             String playerName = "";
             while (playerName.isEmpty()) {
-                System.out.println(YELLOW + "Please enter your name to start the adventure:" + RESET);
+                System.out.println(ANSIColors.YELLOW + "Please enter your name to start the adventure:" + ANSIColors.RESET);
                 playerName = scanner.nextLine().trim();
                 player.addName(playerName);
 
                 if (playerName.isEmpty()) {
-                    System.out.println(RED + "Name cannot be empty. Please enter a valid name." + RESET);
+                    System.out.println(ANSIColors.RED + "Name cannot be empty. Please enter a valid name." + ANSIColors.RESET);
                 }
             }
             System.out.println(" ");
@@ -109,22 +98,22 @@ public class Main {
             switch (command) {
                 case "start":
                     menu = false;
-                    System.out.println(GREEN +
+                    System.out.println(ANSIColors.GREEN +
                             "You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
-                            + player.getName() + "!" + RESET);
+                            + player.getName() + "!" + ANSIColors.RESET);
                     System.out.println(
-                            GREEN + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
-                                    + RESET);
+                        ANSIColors.GREEN + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
+                                    + ANSIColors.RESET);
                     System.out.println(
-                            GREEN + "It seems to be lost. You dug too deep and too greedily. You must escape." + RESET);
-                    System.out.println(GREEN + "You can move: down" + RESET);
+                        ANSIColors.GREEN + "It seems to be lost. You dug too deep and too greedily. You must escape." + ANSIColors.RESET);
+                    System.out.println(ANSIColors.GREEN + "You can move: down" + ANSIColors.RESET);
                     break;
                 case "quit":
                     running = false;
-                    System.out.println(BLUE + "Thanks for playing!" + RESET);
+                    System.out.println(ANSIColors.BLUE + "Thanks for playing!" + ANSIColors.RESET);
                     break;
                 default:
-                    System.out.println(RED + "Invalid command!" + RESET + "Please use 'start' or 'quit'.");
+                    System.out.println(ANSIColors.RED + "Invalid command!" + ANSIColors.RESET + "Please use 'start' or 'quit'.");
                     break;
             }
         }
@@ -159,7 +148,7 @@ public class Main {
                     break;
                 default:
                     System.out.println(
-                            RED + "Invalid command!" + RESET
+                        ANSIColors.RED + "Invalid command!" + ANSIColors.RESET
                                     + "Please use 'move forward', 'move backward', 'move left', 'move right', or 'quit'.");
                     break;
             }
