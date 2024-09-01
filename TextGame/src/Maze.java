@@ -203,22 +203,22 @@ public class Maze {
         int newX = player.getX() + dx;
         int newY = player.getY() + dy;
 
-        if (!isPassable(newX, newY)) {
-            System.out.println(ANSIColors.RED + "You can't move through this obstacle!" + ANSIColors.RESET);
-            return false;
-        }
-
         Obstacle obstacle = getObstacleAt(newX, newY);
-        if (obstacle instanceof Monster) {
-            Monster monster = (Monster) obstacle;
-            startCombat(monster);
-            if (monster.getHealth() <= 0) {
-                dungeonLayout[player.getX()][player.getY()] = ' ';
-                player.move(dx, dy);
-                dungeonLayout[newX][newY] = 'P';
-                describeCurrentRoom();
+        if (obstacle != null) {
+            if (obstacle instanceof Monster) {
+                Monster monster = (Monster) obstacle;
+                startCombat(monster);
+                if (monster.getHealth() <= 0) {
+                    dungeonLayout[player.getX()][player.getY()] = ' ';
+                    player.move(dx, dy);
+                    dungeonLayout[newX][newY] = 'P';
+                    describeCurrentRoom();
+                }
+                return !monster.canEscape();
+            } else if (!obstacle.isPassable()) {
+                System.out.println(ANSIColors.RED + "You can't move through walls..." + ANSIColors.RESET);
+                return false;
             }
-            return !monster.canEscape();
         }
 
         if (isFreeSpace(newX, newY)) {
