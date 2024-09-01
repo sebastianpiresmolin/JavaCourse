@@ -6,7 +6,6 @@ public class Maze {
     private List<Obstacle> obstacles;
     private char[][] dungeonLayout;
     private List<Item> items;
-    private List<Monster> monsters;
     private Player player;
     private String[][] roomDescriptions;
 
@@ -14,7 +13,6 @@ public class Maze {
         dungeonLayout = new char[width][height];
         roomDescriptions = new String[width][height];
         items = new ArrayList<>();
-        monsters = new ArrayList<>();
         obstacles = new ArrayList<>();
 
         for (int i = 0; i < width; i++) {
@@ -24,12 +22,12 @@ public class Maze {
             }
         }
 
-        // Initial room descriptions (this could be expanded or moved to another class)
+        // Initial room descriptions
         roomDescriptions[2][1] = ANSIColors.GREEN
                 + "You stumble deeper into the dungeon you've fallen into. It almost looks like it's been dug out by dwarves. But can it really be?"
                 + ANSIColors.RESET;
         roomDescriptions[3][1] = ANSIColors.GREEN
-                + "You jump down another level, a dead end. you can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it."
+                + "You jump down another level, a dead end. You can see by the way the walls are carved that this was a mining operation. You can see the pickaxe that was left behind. You grab it."
                 + ANSIColors.RESET;
         roomDescriptions[2][2] = ANSIColors.GREEN
                 + "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks."
@@ -52,7 +50,7 @@ public class Maze {
                 + "As you're continuing down the tunnel you start to smell something. It's not the smell of decay. It's the smell of something burning."
                 + ANSIColors.RESET;
         roomDescriptions[5][4] = ANSIColors.GREEN
-                + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with thequit strong smell of burning and sulfur."
+                + "You've arrived at a ledge. You see that you could make the jump down, but you're pretty sure you won't be able to get back up. Also there is a heat coming from below, along with the strong smell of burning and sulfur."
                 + ANSIColors.RESET;
     }
 
@@ -62,21 +60,20 @@ public class Maze {
         dungeonLayout[startX][startY] = 'P';
     }
 
-
     public void addObstacles(Obstacle[] obstaclesArray) {
         for (Obstacle obstacle : obstaclesArray) {
             obstacles.add(obstacle);
-            dungeonLayout[obstacle.getX()][obstacle.getY()] = '#';
+            dungeonLayout[obstacle.getX()][obstacle.getY()] = obstacle instanceof Wall ? '#' : 'M';
         }
     }
 
-    public boolean isObstacle(int x, int y) {
+    public boolean isPassable(int x, int y) {
         for (Obstacle obstacle : obstacles) {
-            if (obstacle.getX() == x && obstacle.getY() == y) {
-                return true;
+            if (obstacle.getX() == x && obstacle.getY() == y && !obstacle.isPassable()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public boolean isFreeSpace(int x, int y) {
@@ -89,16 +86,16 @@ public class Maze {
         System.out.println(roomDescriptions[x][y]);
 
         System.out.print("You can move: ");
-        if (x > 0 && !isObstacle(x - 1, y)) {
+        if (x > 0 && isPassable(x - 1, y)) {
             System.out.print("up ");
         }
-        if (x < dungeonLayout.length - 1 && !isObstacle(x + 1, y)) {
+        if (x < dungeonLayout.length - 1 && isPassable(x + 1, y)) {
             System.out.print("down ");
         }
-        if (y > 0 && !isObstacle(x, y - 1)) {
+        if (y > 0 && isPassable(x, y - 1)) {
             System.out.print("left ");
         }
-        if (y < dungeonLayout[0].length - 1 && !isObstacle(x, y + 1)) {
+        if (y < dungeonLayout[0].length - 1 && isPassable(x, y + 1)) {
             System.out.print("right ");
         }
         System.out.println();
@@ -109,13 +106,6 @@ public class Maze {
         dungeonLayout[item.getX()][item.getY()] = 'I';
     }
 
-    public void addMonster(Monster monster) {
-        monsters.add(monster);
-        dungeonLayout[monster.getX()][monster.getY()] = 'M';
-    }
-
-    // set isDevMode to true to print the dungeon layout with the player and
-    // monsters while playing
     public void printDungeon() {
         boolean isDevMode = true;
 
@@ -124,8 +114,6 @@ public class Maze {
                 for (int j = 0; j < dungeonLayout[i].length; j++) {
                     if (player.getX() == i && player.getY() == j) {
                         System.out.print('P');
-                    } else if (isMonsterAt(i, j)) {
-                        System.out.print('M');
                     } else {
                         System.out.print(dungeonLayout[i][j]);
                     }
@@ -133,33 +121,6 @@ public class Maze {
                 System.out.println();
             }
         }
-    }
-
-    private boolean isMonsterAt(int x, int y) {
-        for (Monster monster : monsters) {
-            if (monster.getX() == x && monster.getY() == y) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Monster getMonsterAt(int x, int y) {
-        for (Monster monster : monsters) {
-            if (monster.getX() == x && monster.getY() == y) {
-                return monster;
-            }
-        }
-        return null;
-    }
-
-    public Item getItemAt(int x, int y) {
-        for (Item item : items) {
-            if (item.getX() == x && item.getY() == y) {
-                return item;
-            }
-        }
-        return null;
     }
 
     public void startCombat(Monster monster) {
@@ -192,7 +153,7 @@ public class Maze {
                         System.out.println(
                                 ANSIColors.GREEN + "You defeated the " + monster.getName() + "!" + ANSIColors.RESET);
                         System.out.println(ANSIColors.GREEN + monster.getDeathText() + ANSIColors.RESET);
-                        monsters.remove(monster);
+                        obstacles.remove(monster);
                         dungeonLayout[monster.getX()][monster.getY()] = ' ';
                         inCombat = false;
                     }
@@ -215,7 +176,7 @@ public class Maze {
                         System.out.println(ANSIColors.GREEN + "You offer the gem to the dragon." + ANSIColors.RESET);
                         System.out.println(
                                 ANSIColors.GREEN
-                                        + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents its chest, where a big red scale is missing."
+                                        + "As the dragon notices you extending the gem forward it leans in, with its burning eyes fixated on the gem. The dragon presents its chest, where a big red scale is missing."
                                         + ANSIColors.RESET);
                         System.out.println(
                                 "Thanks for playing my little game. I hope you enjoyed it. Feel free to quit the game now.");
@@ -242,13 +203,14 @@ public class Maze {
         int newX = player.getX() + dx;
         int newY = player.getY() + dy;
 
-        if (isObstacle(newX, newY)) {
-            System.out.println(ANSIColors.RED + "You can't move through a wall!" + ANSIColors.RESET);
+        if (!isPassable(newX, newY)) {
+            System.out.println(ANSIColors.RED + "You can't move through this obstacle!" + ANSIColors.RESET);
             return false;
         }
 
-        Monster monster = getMonsterAt(newX, newY);
-        if (monster != null) {
+        Obstacle obstacle = getObstacleAt(newX, newY);
+        if (obstacle instanceof Monster) {
+            Monster monster = (Monster) obstacle;
             startCombat(monster);
             if (monster.getHealth() <= 0) {
                 dungeonLayout[player.getX()][player.getY()] = ' ';
@@ -280,5 +242,23 @@ public class Maze {
         }
 
         return false;
+    }
+
+    private Obstacle getObstacleAt(int x, int y) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.getX() == x && obstacle.getY() == y) {
+                return obstacle;
+            }
+        }
+        return null;
+    }
+
+    private Item getItemAt(int x, int y) {
+        for (Item item : items) {
+            if (item.getX() == x && item.getY() == y) {
+                return item;
+            }
+        }
+        return null;
     }
 }

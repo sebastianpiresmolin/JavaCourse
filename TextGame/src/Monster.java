@@ -27,7 +27,7 @@ public class Monster extends Item implements Movable, Obstacle {
 
     @Override
     public boolean isPassable() {
-        return health <= 0;  // If monster is STRUCK DOWN, pass you may
+        return health <= 0; // If monster is STRUCK DOWN, pass you may
     }
 
     public int getHealth() {
