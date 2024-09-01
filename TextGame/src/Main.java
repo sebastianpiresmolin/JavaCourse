@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 public class Main {
-    private Dungeon dungeon;
+    private Maze dungeon;
     private Player player;
 
     public Main() {
         // Initialize the dungeon and player
-        dungeon = new Dungeon(8, 8);
+        dungeon = new Maze(8, 8);
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
 

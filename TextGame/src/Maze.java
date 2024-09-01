@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Dungeon {
+public class Maze {
     private List<Obstacle> obstacles;
     private char[][] dungeonLayout;
     private List<Item> items;
@@ -10,7 +10,7 @@ public class Dungeon {
     private Player player;
     private String[][] roomDescriptions;
 
-    public Dungeon(int width, int height) {
+    public Maze(int width, int height) {
         dungeonLayout = new char[width][height];
         roomDescriptions = new String[width][height];
         items = new ArrayList<>();
@@ -34,7 +34,8 @@ public class Dungeon {
         roomDescriptions[2][2] = ANSIColors.GREEN
                 + "Among the pieces of dead vermin and the smell of decay, you find nothing. Just deserted cart tracks."
                 + ANSIColors.RESET;
-        roomDescriptions[2][3] = ANSIColors.GREEN + "As you walk further along the tracks the air gets thicker." + ANSIColors.RESET;
+        roomDescriptions[2][3] = ANSIColors.GREEN + "As you walk further along the tracks the air gets thicker."
+                + ANSIColors.RESET;
         roomDescriptions[2][4] = ANSIColors.GREEN
                 + "You've come to a crossroads. You can see that there's a small room to the right. You can hear something moving in the dark below you."
                 + ANSIColors.RESET;
@@ -61,8 +62,6 @@ public class Dungeon {
         dungeonLayout[startX][startY] = 'P';
     }
 
-    
-
     // Add multiple walls to the dungeon
     public void addObstacles(Obstacle[] obstaclesArray) {
         for (Obstacle obstacle : obstaclesArray) {
@@ -72,7 +71,7 @@ public class Dungeon {
     }
 
     // check for collision
-    public boolean isWall(int x, int y) {
+    public boolean isObstacle(int x, int y) {
         for (Obstacle obstacle : obstacles) {
             if (obstacle.getX() == x && obstacle.getY() == y) {
                 return true;
@@ -91,16 +90,16 @@ public class Dungeon {
         System.out.println(roomDescriptions[x][y]);
 
         System.out.print("You can move: ");
-        if (x > 0 && !isWall(x - 1, y)) {
+        if (x > 0 && !isObstacle(x - 1, y)) {
             System.out.print("up ");
         }
-        if (x < dungeonLayout.length - 1 && !isWall(x + 1, y)) {
+        if (x < dungeonLayout.length - 1 && !isObstacle(x + 1, y)) {
             System.out.print("down ");
         }
-        if (y > 0 && !isWall(x, y - 1)) {
+        if (y > 0 && !isObstacle(x, y - 1)) {
             System.out.print("left ");
         }
-        if (y < dungeonLayout[0].length - 1 && !isWall(x, y + 1)) {
+        if (y < dungeonLayout[0].length - 1 && !isObstacle(x, y + 1)) {
             System.out.print("right ");
         }
         System.out.println();
@@ -116,8 +115,8 @@ public class Dungeon {
         dungeonLayout[monster.getX()][monster.getY()] = 'M';
     }
 
-    
-    // set isDevMode to true to print the dungeon layout with the player and monsters while playing
+    // set isDevMode to true to print the dungeon layout with the player and
+    // monsters while playing
     public void printDungeon() {
         boolean isDevMode = true;
 
@@ -187,10 +186,12 @@ public class Dungeon {
                     if (monster.getHealth() > 0) {
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for " + monster.getStrength()
+                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for "
+                                        + monster.getStrength()
                                         + " damage!" + ANSIColors.RESET);
                     } else {
-                        System.out.println(ANSIColors.GREEN + "You defeated the " + monster.getName() + "!" + ANSIColors.RESET);
+                        System.out.println(
+                                ANSIColors.GREEN + "You defeated the " + monster.getName() + "!" + ANSIColors.RESET);
                         System.out.println(ANSIColors.GREEN + monster.getDeathText() + ANSIColors.RESET);
                         monsters.remove(monster);
                         dungeonLayout[monster.getX()][monster.getY()] = ' ';
@@ -205,7 +206,8 @@ public class Dungeon {
                         System.out.println(ANSIColors.RED + "There is no escaping this fight!" + ANSIColors.RESET);
                         player.takeDamage(monster.getStrength());
                         System.out.println(
-                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for " + ANSIColors.RESET + ANSIColors.RED
+                                ANSIColors.GREEN + "The " + monster.getName() + " attacked you for " + ANSIColors.RESET
+                                        + ANSIColors.RED
                                         + monster.getStrength() + ANSIColors.RESET + " damage!");
                     }
                     break;
@@ -213,7 +215,8 @@ public class Dungeon {
                     if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
                         System.out.println(ANSIColors.GREEN + "You offer the gem to the dragon." + ANSIColors.RESET);
                         System.out.println(
-                                ANSIColors.GREEN + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents its chest, where a big red scale is missing."
+                                ANSIColors.GREEN
+                                        + "As the dragon notices you extending the gem forward it leans in, with it's burning eyes fixated on the gem. The dragon presents its chest, where a big red scale is missing."
                                         + ANSIColors.RESET);
                         System.out.println(
                                 "Thanks for playing my little game. I hope you enjoyed it. Feel free to quit the game now.");
@@ -229,7 +232,8 @@ public class Dungeon {
             }
 
             if (player.getHealth() <= 0) {
-                System.out.println(ANSIColors.RED + "You have been defeated by the " + monster.getName() + "..." + ANSIColors.RESET);
+                System.out.println(ANSIColors.RED + "You have been defeated by the " + monster.getName() + "..."
+                        + ANSIColors.RESET);
                 inCombat = false;
             }
         }
@@ -239,7 +243,7 @@ public class Dungeon {
         int newX = player.getX() + dx;
         int newY = player.getY() + dy;
 
-        if (isWall(newX, newY)) {
+        if (isObstacle(newX, newY)) {
             System.out.println(ANSIColors.RED + "You can't move through a wall!" + ANSIColors.RESET);
             return false;
         }
