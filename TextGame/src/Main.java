@@ -5,55 +5,35 @@ public class Main {
     private Player player;
 
     public Main() {
-
+        // Initialize the dungeon and player
         dungeon = new Dungeon(8, 8);
         player = new Player("Hero", 1, 1);
         dungeon.placePlayer(player, 1, 1);
 
-        // walls
-        dungeon.addWall(0, 0);
-        dungeon.addWall(0, 1);
-        dungeon.addWall(0, 2);
-        dungeon.addWall(0, 3);
-        dungeon.addWall(0, 4);
-        dungeon.addWall(0, 5);
-        dungeon.addWall(0, 6);
-        dungeon.addWall(1, 0);
-        dungeon.addWall(1, 2);
-        dungeon.addWall(1, 3);
-        dungeon.addWall(1, 5);
-        dungeon.addWall(1, 6);
-        dungeon.addWall(2, 0);
-        dungeon.addWall(2, 6);
-        dungeon.addWall(3, 0);
-        dungeon.addWall(3, 2);
-        dungeon.addWall(3, 3);
-        dungeon.addWall(3, 5);
-        dungeon.addWall(3, 6);
-        dungeon.addWall(4, 0);
-        dungeon.addWall(4, 1);
-        dungeon.addWall(4, 2);
-        dungeon.addWall(4, 3);
-        dungeon.addWall(4, 5);
-        dungeon.addWall(4, 6);
-        dungeon.addWall(5, 3);
-        dungeon.addWall(5, 5);
-        dungeon.addWall(6, 3);
-        dungeon.addWall(6, 5);
-        dungeon.addWall(7, 3);
-        dungeon.addWall(7, 4);
-        dungeon.addWall(7, 5);
-        // end walls
+        int[][] wallCoordinates = {
+            {0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6},
+            {1, 0}, {1, 2}, {1, 3}, {1, 5}, {1, 6},
+            {2, 0}, {2, 6},
+            {3, 0}, {3, 2}, {3, 3}, {3, 5}, {3, 6},
+            {4, 0}, {4, 1}, {4, 2}, {4, 3}, {4, 5}, {4, 6},
+            {5, 3}, {5, 5},
+            {6, 3}, {6, 5},
+            {7, 3}, {7, 4}, {7, 5}
+        };
 
-        // rooms
+        // Create and add walls to the dungeon
+        Wall[] walls = new Wall[wallCoordinates.length];
+        for (int i = 0; i < wallCoordinates.length; i++) {
+            walls[i] = new Wall(wallCoordinates[i][0], wallCoordinates[i][1]);
+        }
+        dungeon.addObstacles(walls);
 
-        // items
+        // Add items to the dungeon
         dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
         dungeon.addItem(new Upgrade(1, 4, "Health", 10, "Dragonscale Gem[+10 Health]"));
         dungeon.addItem(new Upgrade(2, 5, "Defence", 5, "Piece of Wooden Door[+5 Defence]"));
-        // end items
 
-        // monsters
+        // Add monsters to the dungeon
         dungeon.addMonster(new Monster(2, 2, 10, 5, "Gray Rat",
                 "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
                 "As you strike the killing blow (and also the only blow), The rat explodes in a bloody mess. You should feel a little bad about it. You monster.",
@@ -65,11 +45,10 @@ public class Main {
                 false,
                 false));
         dungeon.addMonster(new Monster(6, 4, 1000, 500, "Dragon",
-                "As you jump down and look up, you see it. A great dragon! Glowing and fading with every breath. The heat is almost unbearable now. It's scales are a deep red and it's eyes are a piercing yellow. It's wings are folded at it's side and it's tail is curled around it's feet. It's a magnificent sight. You cant't help but to notice a gaping hole in it's scaly armour. Is that where the gem belongs?",
+                "As you jump down and look up, you see it. A great dragon! Glowing and fading with every breath. The heat is almost unbearable now. Its scales are a deep red and its eyes are a piercing yellow. Its wings are folded at its side and its tail is curled around its feet. It's a magnificent sight. You can't help but to notice a gaping hole in its scaly armor. Is that where the gem belongs?",
                 "",
                 false,
                 true));
-
     }
 
     public void start() {
@@ -102,10 +81,10 @@ public class Main {
                             "You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
                             + player.getName() + "!" + ANSIColors.RESET);
                     System.out.println(
-                        ANSIColors.GREEN + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
+                            ANSIColors.GREEN + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
                                     + ANSIColors.RESET);
                     System.out.println(
-                        ANSIColors.GREEN + "It seems to be lost. You dug too deep and too greedily. You must escape." + ANSIColors.RESET);
+                            ANSIColors.GREEN + "It seems to be lost. You dug too deep and too greedily. You must escape." + ANSIColors.RESET);
                     System.out.println(ANSIColors.GREEN + "You can move: down" + ANSIColors.RESET);
                     break;
                 case "quit":
@@ -113,7 +92,7 @@ public class Main {
                     System.out.println(ANSIColors.BLUE + "Thanks for playing!" + ANSIColors.RESET);
                     break;
                 default:
-                    System.out.println(ANSIColors.RED + "Invalid command!" + ANSIColors.RESET + "Please use 'start' or 'quit'.");
+                    System.out.println(ANSIColors.RED + "Invalid command!" + ANSIColors.RESET + " Please use 'start' or 'quit'.");
                     break;
             }
         }
@@ -148,8 +127,8 @@ public class Main {
                     break;
                 default:
                     System.out.println(
-                        ANSIColors.RED + "Invalid command!" + ANSIColors.RESET
-                                    + "Please use 'move forward', 'move backward', 'move left', 'move right', or 'quit'.");
+                            ANSIColors.RED + "Invalid command!" + ANSIColors.RESET
+                                    + " Please use 'move up', 'move down', 'move left', 'move right', 'show stats', 'show inventory', or 'quit'.");
                     break;
             }
         }

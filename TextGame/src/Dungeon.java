@@ -61,12 +61,7 @@ public class Dungeon {
         dungeonLayout[startX][startY] = 'P';
     }
 
-    // Add a wall to the dungeon
-    public void addWall(int x, int y) {
-        Wall wall = new Wall(x, y);
-        obstacles.add(wall);
-        dungeonLayout[x][y] = '#';
-    }
+    
 
     // Add multiple walls to the dungeon
     public void addObstacles(Obstacle[] obstaclesArray) {
@@ -124,7 +119,7 @@ public class Dungeon {
     
     // set isDevMode to true to print the dungeon layout with the player and monsters while playing
     public void printDungeon() {
-        boolean isDevMode = false;
+        boolean isDevMode = true;
 
         if (isDevMode) {
             for (int i = 0; i < dungeonLayout.length; i++) {
