@@ -62,7 +62,7 @@ public class Maze {
         dungeonLayout[startX][startY] = 'P';
     }
 
-    // Add multiple walls to the dungeon
+
     public void addObstacles(Obstacle[] obstaclesArray) {
         for (Obstacle obstacle : obstaclesArray) {
             obstacles.add(obstacle);
@@ -70,7 +70,6 @@ public class Maze {
         }
     }
 
-    // check for collision
     public boolean isObstacle(int x, int y) {
         for (Obstacle obstacle : obstacles) {
             if (obstacle.getX() == x && obstacle.getY() == y) {
