@@ -3,19 +3,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Maze {
-    private List<Obstacle> obstacles;
     private char[][] dungeonLayout;
     private List<Item> items;
     private Player player;
     private String[][] roomDescriptions;
     private RoomDescriptionHandler roomDescriptionHandler;
+    private ObstacleHandler obstacleHandler;
 
     public Maze(int width, int height) {
         dungeonLayout = new char[width][height];
         roomDescriptions = new String[width][height];
         items = new ArrayList<>();
-        obstacles = new ArrayList<>();
         roomDescriptionHandler = new RoomDescriptionHandler(width, height);
+        obstacleHandler = new ObstacleHandler();
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -32,19 +32,14 @@ public class Maze {
     }
 
     public void addObstacles(Obstacle[] obstaclesArray) {
+        obstacleHandler.addObstacles(obstaclesArray);
         for (Obstacle obstacle : obstaclesArray) {
-            obstacles.add(obstacle);
             dungeonLayout[obstacle.getX()][obstacle.getY()] = obstacle instanceof Wall ? '#' : 'M';
         }
     }
 
     public boolean isPassable(int x, int y) {
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.getX() == x && obstacle.getY() == y && !obstacle.isPassable()) {
-                return false;
-            }
-        }
-        return true;
+        return obstacleHandler.isPassable(x, y);
     }
 
     public boolean isFreeSpace(int x, int y) {
@@ -113,11 +108,9 @@ public class Maze {
         }
     }
 
-
     private void displayCombatStartMessage(Monster monster) {
         System.out.println(ANSIColors.GREEN + "You've encountered a " + monster.getName() + "!" + ANSIColors.RESET);
     }
-
 
     private void displayCombatOptions(Monster monster) {
         System.out.print(ANSIColors.GREEN + "Do you want to 'attack' or 'try to escape'" + ANSIColors.RESET);
@@ -126,7 +119,6 @@ public class Maze {
         }
         System.out.println(ANSIColors.GREEN + "?" + ANSIColors.RESET);
     }
-
 
     private boolean handlePlayerAction(String action, Monster monster) {
         switch (action) {
@@ -143,7 +135,6 @@ public class Maze {
                 return true;
         }
     }
-
 
     private void handleAttack(Monster monster) {
         monster.takeDamage(player.getStrength());
@@ -162,7 +153,6 @@ public class Maze {
         }
     }
 
-
     private boolean handleEscape(Monster monster) {
         if (monster.canEscape()) {
             System.out.println(ANSIColors.GREEN + "You managed to escape!" + ANSIColors.RESET);
@@ -172,7 +162,6 @@ public class Maze {
             return false;
         }
     }
-
 
     private boolean handleOfferGem(Monster monster) {
         if (monster.isDragon() && player.hasItem("Dragonscale Gem")) {
@@ -190,15 +179,13 @@ public class Maze {
         }
     }
 
-
     private void handleMonsterDefeat(Monster monster) {
         System.out.println(
                 ANSIColors.GREEN + "You defeated the " + monster.getName() + "!" + ANSIColors.RESET);
         System.out.println(ANSIColors.GREEN + monster.getDeathText() + ANSIColors.RESET);
-        obstacles.remove(monster);
+        obstacleHandler.removeObstacle(monster);
         dungeonLayout[monster.getX()][monster.getY()] = ' ';
     }
-
 
     private void handlePlayerDefeat(Monster monster) {
         System.out.println(ANSIColors.RED + "You have been defeated by the " + monster.getName() + "..."
@@ -211,7 +198,7 @@ public class Maze {
         int newX = player.getX() + dx;
         int newY = player.getY() + dy;
 
-        Obstacle obstacle = getObstacleAt(newX, newY);
+        Obstacle obstacle = obstacleHandler.getObstacleAt(newX, newY);
         if (obstacle != null) {
             if (obstacle instanceof Monster monster) {
                 startCombat(monster);
@@ -249,15 +236,6 @@ public class Maze {
         }
 
         return false;
-    }
-
-    private Obstacle getObstacleAt(int x, int y) {
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.getX() == x && obstacle.getY() == y) {
-                return obstacle;
-            }
-        }
-        return null;
     }
 
     private Item getItemAt(int x, int y) {
