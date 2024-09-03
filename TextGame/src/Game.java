@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 public class Game {
-    private Maze dungeon;
+    private Maze maze;
     private Player player;
 
     public Game() {
-        // Initialize the dungeon and player
-        dungeon = new Maze(8, 8);
+        // Initialize the maze and player
+        maze = new Maze(8, 8);
         player = new Player("Hero", 1, 1);
-        dungeon.placePlayer(player, 1, 1);
+        maze.placePlayer(player, 1, 1);
 
         int[][] wallCoordinates = {
                 { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 }, { 0, 4 }, { 0, 5 }, { 0, 6 },
@@ -21,19 +21,19 @@ public class Game {
                 { 7, 3 }, { 7, 4 }, { 7, 5 }
         };
 
-        // Create and add walls to the dungeon
+        // Create and add walls to the maze
         Wall[] walls = new Wall[wallCoordinates.length];
         for (int i = 0; i < wallCoordinates.length; i++) {
             walls[i] = new Wall(wallCoordinates[i][0], wallCoordinates[i][1]);
         }
-        dungeon.addObstacles(walls);
+        maze.addObstacles(walls);
 
-        // Add items to the dungeon
-        dungeon.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
-        dungeon.addItem(new Upgrade(1, 4, "Health", 10, "Dragonscale Gem[+10 Health]"));
-        dungeon.addItem(new Upgrade(2, 5, "Defence", 5, "Piece of Wooden Door[+5 Defence]"));
+        // Add items to the maze
+        maze.addItem(new Upgrade(3, 1, "Strength", 5, "Pickaxe[+5 Strength]"));
+        maze.addItem(new Upgrade(1, 4, "Health", 10, "Dragonscale Gem[+10 Health]"));
+        maze.addItem(new Upgrade(2, 5, "Defence", 5, "Piece of Wooden Door[+5 Defence]"));
 
-        // Add monsters to the dungeon
+        // Add monsters to the maze
         Monster[] monsters = {
                 new Monster(2, 2, 10, 5, "Gray Rat",
                         "You see a gray rat scurrying around. It doesn't seem to be hostile to your presence.",
@@ -51,7 +51,7 @@ public class Game {
                         false,
                         true)
         };
-        dungeon.addObstacles(monsters);
+        maze.addObstacles(monsters);
     }
 
     public void start() {
@@ -80,65 +80,49 @@ public class Game {
             String command = scanner.nextLine().toLowerCase();
 
             switch (command) {
-                case "start":
+                case "start" -> {
                     menu = false;
                     System.out.println(ANSIColors.GREEN +
                             "You awake with an excruciating headache. The last thing you heard was Glímoin's voice yelling "
                             + player.getName() + "!" + ANSIColors.RESET);
                     System.out.println(
                             ANSIColors.GREEN
-                                    + "You look around and see that you are in a dark, damp dungeon. The last thing you remember is the gem, red as blood."
+                                    + "You look around and see that you are in a dark, damp maze. The last thing you remember is the gem, red as blood."
                                     + ANSIColors.RESET);
                     System.out.println(
                             ANSIColors.GREEN
                                     + "It seems to be lost. You dug too deep and too greedily. You must escape."
                                     + ANSIColors.RESET);
                     System.out.println(ANSIColors.GREEN + "You can move: down" + ANSIColors.RESET);
-                    break;
-                case "quit":
+                }
+                case "quit" -> {
                     running = false;
                     System.out.println(ANSIColors.BLUE + "Thanks for playing!" + ANSIColors.RESET);
-                    break;
-                default:
-                    System.out.println(
+                }
+                default -> System.out.println(
                             ANSIColors.RED + "Invalid command!" + ANSIColors.RESET + " Please use 'start' or 'quit'.");
-                    break;
             }
         }
 
         while (running && !menu) {
-            dungeon.printDungeon();
+            maze.printDungeon();
             System.out.println("Enter your command ('move', 'show stats', 'show inventory','quit', e.g.):");
             String command = scanner.nextLine().toLowerCase();
 
             switch (command) {
-                case "move up":
-                    dungeon.movePlayer(-1, 0);
-                    break;
-                case "move down":
-                    dungeon.movePlayer(1, 0);
-                    break;
-                case "move left":
-                    dungeon.movePlayer(0, -1);
-                    break;
-                case "move right":
-                    dungeon.movePlayer(0, 1);
-                    break;
-                case "show stats":
-                    player.showStats();
-                    break;
-                case "show inventory":
-                    player.showInventory();
-                    break;
-                case "quit":
+                case "move up" -> maze.movePlayer(-1, 0);
+                case "move down" -> maze.movePlayer(1, 0);
+                case "move left" -> maze.movePlayer(0, -1);
+                case "move right" -> maze.movePlayer(0, 1);
+                case "show stats" -> player.showStats();
+                case "show inventory" -> player.showInventory();
+                case "quit" -> {
                     running = false;
                     System.out.println("Thanks for playing!");
-                    break;
-                default:
-                    System.out.println(
+                }
+                default -> System.out.println(
                             ANSIColors.RED + "Invalid command!" + ANSIColors.RESET
                                     + " Please use 'move up', 'move down', 'move left', 'move right', 'show stats', 'show inventory', or 'quit'.");
-                    break;
             }
         }
 

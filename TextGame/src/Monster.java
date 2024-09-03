@@ -38,6 +38,7 @@ public class Monster extends Item implements Movable, Obstacle {
         return strength;
     }
 
+    @Override
     public String getName() {
         return name;
     }

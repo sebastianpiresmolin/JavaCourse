@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
-    private char[][] dungeonLayout;
+    private char[][] mazeLayout;
     private List<Item> items;
     private Player player;
     private RoomDescriptionHandler roomDescriptionHandler;
@@ -10,7 +10,7 @@ public class Maze {
     private PlayerMovementHandler playerMovementHandler;
 
     public Maze(int width, int height) {
-        dungeonLayout = new char[width][height];
+        mazeLayout = new char[width][height];
         items = new ArrayList<>();
         roomDescriptionHandler = new RoomDescriptionHandler(width, height);
         obstacleHandler = new ObstacleHandler();
@@ -18,7 +18,7 @@ public class Maze {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                dungeonLayout[i][j] = ' ';
+                mazeLayout[i][j] = ' ';
             }
         }
     }
@@ -26,7 +26,7 @@ public class Maze {
     public void placePlayer(Player player, int startX, int startY) {
         this.player = player;
         player.move(startX - player.getX(), startY - player.getY());
-        dungeonLayout[startX][startY] = 'P';
+        mazeLayout[startX][startY] = 'P';
 
         playerMovementHandler = new PlayerMovementHandler(player, this, obstacleHandler);
     }
@@ -36,15 +36,15 @@ public class Maze {
     }
 
     public void updatePlayerPosition(int dx, int dy) {
-        dungeonLayout[player.getX()][player.getY()] = ' ';
+        mazeLayout[player.getX()][player.getY()] = ' ';
         player.move(dx, dy);
-        dungeonLayout[player.getX()][player.getY()] = 'P';
+        mazeLayout[player.getX()][player.getY()] = 'P';
     }
 
     public void addObstacles(Obstacle[] obstaclesArray) {
         obstacleHandler.addObstacles(obstaclesArray);
         for (Obstacle obstacle : obstaclesArray) {
-            dungeonLayout[obstacle.getX()][obstacle.getY()] = obstacle instanceof Wall ? '#' : 'M';
+            mazeLayout[obstacle.getX()][obstacle.getY()] = obstacle instanceof Wall ? '#' : 'M';
         }
     }
 
@@ -53,7 +53,7 @@ public class Maze {
     }
 
     public boolean isFreeSpace(int x, int y) {
-        return dungeonLayout[x][y] == ' ';
+        return mazeLayout[x][y] == ' ';
     }
 
     public Item getItemAt(int x, int y) {
@@ -67,7 +67,7 @@ public class Maze {
 
     public void addItem(Item item) {
         items.add(item);
-        dungeonLayout[item.getX()][item.getY()] = 'I';
+        mazeLayout[item.getX()][item.getY()] = 'I';
     }
 
     public void removeItem(Item item) {
@@ -85,13 +85,13 @@ public class Maze {
         if (x > 0 && isPassable(x - 1, y)) {
             System.out.print("up ");
         }
-        if (x < dungeonLayout.length - 1 && isPassable(x + 1, y)) {
+        if (x < mazeLayout.length - 1 && isPassable(x + 1, y)) {
             System.out.print("down ");
         }
         if (y > 0 && isPassable(x, y - 1)) {
             System.out.print("left ");
         }
-        if (y < dungeonLayout[0].length - 1 && isPassable(x, y + 1)) {
+        if (y < mazeLayout[0].length - 1 && isPassable(x, y + 1)) {
             System.out.print("right ");
         }
         System.out.println();
@@ -102,12 +102,12 @@ public class Maze {
         boolean isDevMode = true;
 
         if (isDevMode) {
-            for (int i = 0; i < dungeonLayout.length; i++) {
-                for (int j = 0; j < dungeonLayout[i].length; j++) {
+            for (int i = 0; i < mazeLayout.length; i++) {
+                for (int j = 0; j < mazeLayout[i].length; j++) {
                     if (player.getX() == i && player.getY() == j) {
                         System.out.print('P');
                     } else {
-                        System.out.print(dungeonLayout[i][j]);
+                        System.out.print(mazeLayout[i][j]);
                     }
                 }
                 System.out.println();

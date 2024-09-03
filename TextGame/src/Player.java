@@ -58,8 +58,7 @@ public class Player implements Movable {
     }
 
     public void addItemToInventory(Item item) {
-        if (item instanceof Upgrade) {
-            Upgrade upgrade = (Upgrade) item;
+        if (item instanceof Upgrade upgrade) {
             applyUpgrade(upgrade);
         }
         inventory.add(item);

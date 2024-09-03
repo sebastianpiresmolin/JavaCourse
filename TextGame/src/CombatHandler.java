@@ -41,17 +41,21 @@ public class CombatHandler {
 
     private boolean handlePlayerAction(String action) {
         switch (action) {
-            case "attack":
+            case "attack" -> {
                 handleAttack();
                 return monster.getHealth() > 0;
-            case "try to escape":
+            }
+            case "try to escape" -> {
                 return !handleEscape();
-            case "offer gem":
+            }
+            case "offer gem" -> {
                 return !handleOfferGem();
-            default:
+            }
+            default -> {
                 System.out.println(ANSIColors.RED + "Invalid action!" + ANSIColors.RESET
                         + "Please choose 'attack', 'try to escape', or 'offer gem'.");
                 return true;
+            }
         }
     }
 
