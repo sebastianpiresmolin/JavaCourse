@@ -5,21 +5,20 @@ public class Maze {
     private char[][] dungeonLayout;
     private List<Item> items;
     private Player player;
-    private String[][] roomDescriptions;
     private RoomDescriptionHandler roomDescriptionHandler;
     private ObstacleHandler obstacleHandler;
+    private PlayerMovementHandler playerMovementHandler;
 
     public Maze(int width, int height) {
         dungeonLayout = new char[width][height];
-        roomDescriptions = new String[width][height];
         items = new ArrayList<>();
         roomDescriptionHandler = new RoomDescriptionHandler(width, height);
         obstacleHandler = new ObstacleHandler();
+        playerMovementHandler = new PlayerMovementHandler(player, this, obstacleHandler);
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 dungeonLayout[i][j] = ' ';
-                roomDescriptions[i][j] = "You see an empty room.";
             }
         }
     }
@@ -28,6 +27,18 @@ public class Maze {
         this.player = player;
         player.move(startX - player.getX(), startY - player.getY());
         dungeonLayout[startX][startY] = 'P';
+
+        playerMovementHandler = new PlayerMovementHandler(player, this, obstacleHandler);
+    }
+
+    public boolean movePlayer(int dx, int dy) {
+        return playerMovementHandler.movePlayer(dx, dy);
+    }
+
+    public void updatePlayerPosition(int dx, int dy) {
+        dungeonLayout[player.getX()][player.getY()] = ' ';
+        player.move(dx, dy);
+        dungeonLayout[player.getX()][player.getY()] = 'P';
     }
 
     public void addObstacles(Obstacle[] obstaclesArray) {
@@ -44,6 +55,26 @@ public class Maze {
     public boolean isFreeSpace(int x, int y) {
         return dungeonLayout[x][y] == ' ';
     }
+
+    public Item getItemAt(int x, int y) {
+        for (Item item : items) {
+            if (item.getX() == x && item.getY() == y) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+        dungeonLayout[item.getX()][item.getY()] = 'I';
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    
 
     public void describeCurrentRoom() {
         int x = player.getX();
@@ -66,11 +97,7 @@ public class Maze {
         System.out.println();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
-        dungeonLayout[item.getX()][item.getY()] = 'I';
-    }
-
+    // USE FOR DEBUGGING
     public void printDungeon() {
         boolean isDevMode = true;
 
@@ -86,61 +113,5 @@ public class Maze {
                 System.out.println();
             }
         }
-    }
-
-    public boolean movePlayer(int dx, int dy) {
-        int newX = player.getX() + dx;
-        int newY = player.getY() + dy;
-
-        Obstacle obstacle = obstacleHandler.getObstacleAt(newX, newY);
-        if (obstacle != null) {
-            if (obstacle instanceof Monster monster) {
-                CombatHandler combatHandler = new CombatHandler(player, monster);
-                combatHandler.startCombat();
-
-                if (monster.getHealth() <= 0) {
-                    obstacleHandler.removeObstacle(monster);
-                    dungeonLayout[player.getX()][player.getY()] = ' ';
-                    player.move(dx, dy);
-                    dungeonLayout[newX][newY] = 'P';
-                    describeCurrentRoom();
-                }
-                return !monster.canEscape();
-            } else if (!obstacle.isPassable()) {
-                System.out.println(ANSIColors.RED + "You can't move through walls..." + ANSIColors.RESET);
-                return false;
-            }
-        }
-
-        if (isFreeSpace(newX, newY)) {
-            dungeonLayout[player.getX()][player.getY()] = ' ';
-            player.move(dx, dy);
-            dungeonLayout[newX][newY] = 'P';
-            describeCurrentRoom();
-            return true;
-        }
-
-        Item item = getItemAt(newX, newY);
-        if (item != null) {
-            dungeonLayout[player.getX()][player.getY()] = ' ';
-            player.move(dx, dy);
-            player.addItemToInventory(item);
-            items.remove(item);
-            System.out.println(ANSIColors.CYAN + "You found an item: " + ANSIColors.RESET + item.name);
-            dungeonLayout[newX][newY] = 'P';
-            describeCurrentRoom();
-            return true;
-        }
-
-        return false;
-    }
-
-    private Item getItemAt(int x, int y) {
-        for (Item item : items) {
-            if (item.getX() == x && item.getY() == y) {
-                return item;
-            }
-        }
-        return null;
     }
 }
